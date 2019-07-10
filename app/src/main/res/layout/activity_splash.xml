@@ -1,6 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/ivSplashActivityBottomIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="40dp"
+        android:src="@mipmap/ic_launcher_round" />
+
+    <!-- 广告页 -->
+    <ImageView
+        android:id="@+id/ivSplashActivityAd"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/ivSplashActivityBottomIcon"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
+
+    <!-- 日常祝福语/提醒事宜 -->
+    <RelativeLayout
+        android:id="@+id/rlSplashBlessContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/ivSplashActivityBottomIcon">
+
+        <com.niupuyue.mylibrary.widgets.CircleImageView
+            android:id="@+id/ivSplashActivityAvator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tvSplashActivityBless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ivSplashActivityAvator"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/splash_activity_bless_default"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llSplashActivityJump"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/tvSplashActivityJumpCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:text="123"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

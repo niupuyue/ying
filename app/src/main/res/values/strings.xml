@@ -5,7 +5,8 @@
 
 
     <!-- 闪屏页面 -->
-
+    <string name="splash_activity_bless_default">你好</string>
+    <string name="splash_activity_bless_affair">任务:%s</string>
 
     <!-- 权限相关 -->
     <string name="permission_ask_fail_content">需要获取定位，读取存储空间等权限，否则将会影响您的正常使用！</string>
