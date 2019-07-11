@@ -62,12 +62,36 @@ public class BusinessUtility {
     }
 
     /**
-     * 设置系统默认的信息列表
+     * 设置系统默认的节日列表
      * TODO
      */
     public static List<FestivalModel> getSysFestivals() {
         List<FestivalModel> festivalModels = new ArrayList<>();
-
+        // 元旦
+        FestivalModel newYearFestival = new FestivalModel();
+        newYearFestival.setFestivalDate(1546272000000L);
+        newYearFestival.setFestivalName("元旦");
+        newYearFestival.setFestivalNote("他年妙笔开天路，万驾仙鸾纸上来");
+        // 情人节
+        FestivalModel valentineFestival = new FestivalModel();
+        valentineFestival.setFestivalNote("愿得一人心，白首不分离");
+        valentineFestival.setFestivalName("情人节");
+        valentineFestival.setFestivalDate(1550073600000L);
+        // 中国新年
+        FestivalModel cnNewYearFestival = new FestivalModel();
+        cnNewYearFestival.setFestivalDate(1549296000000L);
+        cnNewYearFestival.setFestivalName("新年");
+        cnNewYearFestival.setFestivalNote("欢天喜地中国年");
+        // 元宵节
+        FestivalModel lanterFestival = new FestivalModel();
+        lanterFestival.setFestivalNote("元宵节快乐");
+        lanterFestival.setFestivalName("元宵节");
+        lanterFestival.setFestivalDate(1550505600000L);
+        // 七夕
+        FestivalModel qixiFestival = new FestivalModel();
+        qixiFestival.setFestivalDate(1565107200000L);
+        qixiFestival.setFestivalName("七夕");
+        qixiFestival.setFestivalNote("");
         return festivalModels;
     }
 
