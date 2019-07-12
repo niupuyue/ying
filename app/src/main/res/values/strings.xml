@@ -10,4 +10,7 @@
 
     <!-- 权限相关 -->
     <string name="permission_ask_fail_content">需要获取定位，读取存储空间等权限，否则将会影响您的正常使用！</string>
+    <string name="welcome_activity_jump">跳过</string>
+    <string name="welcome_activity_goto_home">开启旅程</string>
+    <string name="splash_activity_count">%ss</string>
 </resources>

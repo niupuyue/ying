@@ -1,21 +1,22 @@
 package com.paulniu.ying;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.amap.api.location.AMapLocation;
 import com.orhanobut.logger.Logger;
+import com.paulniu.ying.base.BaseActivity;
 import com.paulniu.ying.callback.ILocationCallback;
 import com.paulniu.ying.util.LocationUtility;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Locale;
+public class MainActivity extends BaseActivity {
 
-public class MainActivity extends AppCompatActivity {
+    public static Intent getIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

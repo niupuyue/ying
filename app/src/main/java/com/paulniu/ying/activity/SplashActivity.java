@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -22,6 +23,7 @@ import com.niupuyue.mylibrary.utils.BaseUtility;
 import com.niupuyue.mylibrary.utils.ListenerUtility;
 import com.niupuyue.mylibrary.widgets.CircleImageView;
 import com.niupuyue.mylibrary.widgets.SimpleDialog;
+import com.paulniu.ying.MainActivity;
 import com.paulniu.ying.R;
 import com.paulniu.ying.base.BaseActivity;
 import com.paulniu.ying.callback.ILocationCallback;
@@ -61,18 +63,51 @@ public class SplashActivity extends BaseActivity implements ILocationCallback, V
 
         @Override
         public void handleMessage(Message msg) {
-            if (mWeakReference == null || mWeakReference.get() == null || mWeakReference.get().isFinishing())
+            if (null == msg || mWeakReference == null || mWeakReference.get() == null || mWeakReference.get().isFinishing())
                 return;
+            switch (msg.what) {
+                case HANDLER_SHOWAD:
+                    // 展示闪屏广告
 
-//            if (msg.what == Handler_LoadData) {
-//                //重新加载数据
-//                loadData(true, false);
-//            }
+                    // 开始计时
+                    startCount();
+                    // 展示广告动画
+                    showAdAnimation();
+                    break;
+                case HANDLER_START_COUNT:
+                    BaseUtility.setText(tvSplashActivityJumpCount, String.format(getString(R.string.splash_activity_count), String.valueOf(msg.obj)));
+                    break;
+                case HANDLER_NEXT_VIEW:
+                    // 关闭计时
+                    stopCount();
+                    Intent intent = MainActivity.getIntent(SplashActivity.this);
+                    startActivity(intent);
+                    finish();
+                    break;
+            }
         }
     }
 
     // 设置广告动画延时显示时间
     private static final long delayMillisBless = 1500L;
+
+    // 展示闪屏广告
+    private static final int HANDLER_SHOWAD = 0x100;
+    // 倒计时3秒开始
+    private static final int HANDLER_START_COUNT = 0x101;
+    // 渠道下一个页面
+    private static final int HANDLER_NEXT_VIEW = 0x102;
+
+    // 设置发送handler事件的默认延迟时间
+    private static final long SEND_HANDLER_MESSAGE_DELAY = 200L;
+    // 设置最后一秒时的时间
+    private static final long COUNT_LAST_SECOND = 800L;
+    // 设置普通一秒的时间
+    private static final long COUNT_NORMAL_SECOND = 1000L;
+
+    // 倒计时子线程 TODO 后面需要修改 这里可能会造成内存泄漏
+    private Thread timeCountThread = null;
+
 
     // 是否展示欢迎语或者提醒事务
     private boolean isShowedFestivals = true;
@@ -129,7 +164,10 @@ public class SplashActivity extends BaseActivity implements ILocationCallback, V
                             SimpleDialog.showSimpleDialog(SplashActivity.this, getString(R.string.permission_ask_fail_content), new ISimpleDialogButtonClickCallback() {
                                 @Override
                                 public void onLeftButtonClick() {
-                                    // 点击取消按钮，进入应用系统设置页面
+                                    // 点击取消按钮，进入应用系统设置页面 TODO
+                                    Intent i = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                                    i.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                                    startActivity(i);
                                 }
 
                                 @Override
@@ -295,8 +333,14 @@ public class SplashActivity extends BaseActivity implements ILocationCallback, V
     /**
      * 展示广告
      */
-    private void showAd(){
-
+    private void showAd() {
+        // 通过Handler执行异步操作
+        Message message = Message.obtain();
+        message.obj = null;
+        message.what = HANDLER_SHOWAD;
+        if (null != handler) {
+            handler.sendMessageDelayed(message, SEND_HANDLER_MESSAGE_DELAY);
+        }
     }
 
     /**
@@ -322,6 +366,61 @@ public class SplashActivity extends BaseActivity implements ILocationCallback, V
             }
         });
         ivSplashActivityAd.startAnimation(alphaAnimation);
+    }
+
+    /**
+     * 开启倒计时
+     */
+    private void startCount() {
+        // 设置倒计时view可见
+        BaseUtility.resetVisibility(tvSplashActivityJumpCount, true);
+        // 设置初始计时时间
+        BaseUtility.setText(tvSplashActivityJumpCount, String.format(getString(R.string.splash_activity_count), String.valueOf(3)));
+        timeCountThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    Message msg;
+                    for (int i = 3; i >= 0; i--) {
+                        if (i == 0) {
+                            // 倒计时结束，去到下一个页面
+                            msg = Message.obtain();
+                            msg.what = HANDLER_NEXT_VIEW;
+                            if (handler != null) {
+                                handler.sendMessage(msg);
+                            }
+                        } else {
+                            // 倒计时未结束
+                            msg = Message.obtain();
+                            msg.what = HANDLER_START_COUNT;
+                            msg.obj = i;
+                            if (handler != null) {
+                                handler.sendMessage(msg);
+                            }
+                            // 如果是最后一秒，则加快进入下一个页面
+                            if (i == 1) {
+                                Thread.sleep(COUNT_LAST_SECOND);
+                            } else {
+                                Thread.sleep(COUNT_NORMAL_SECOND);
+                            }
+                        }
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        };
+        // 启动线程
+        timeCountThread.start();
+    }
+
+    /**
+     * 停止计时
+     */
+    private void stopCount() {
+        if (timeCountThread != null) {
+            timeCountThread.interrupt();
+        }
     }
 
     @Override
@@ -350,7 +449,9 @@ public class SplashActivity extends BaseActivity implements ILocationCallback, V
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.llSplashActivityJump:
-
+                if (handler != null) {
+                    handler.sendEmptyMessage(HANDLER_NEXT_VIEW);
+                }
                 break;
         }
     }
