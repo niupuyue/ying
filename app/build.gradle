@@ -1,16 +1,23 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.ext.android.compileSdk
     defaultConfig {
         applicationId "com.paulniu.ying"
-        minSdkVersion 19
-        targetSdkVersion 28
+        minSdkVersion rootProject.ext.android.minSdk
+        targetSdkVersion rootProject.ext.android.targetSdk
+        buildToolsVersion rootProject.ext.android.buildTools
         ndk {
             //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
             abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "arm64-v8a", "x86_64"
         }
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -21,20 +28,20 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
+    api "com.android.support:appcompat-v7:$rootProject.ext.dependencies.supportLibraryVersion"
 
-    implementation 'com.github.xiaoniudadi:IYingLibrary:0.0.7'
+    api "com.github.xiaoniudadi:IYingLibrary:$rootProject.ext.dependencies.IYingLibrary"
 
     // 高德地图
-    implementation 'com.amap.api:location:latest.integration'
+    api "com.amap.api:location:$rootProject.ext.dependencies.amapLocation"
     // Logger
-    implementation 'com.orhanobut:logger:2.2.0'
+    api "com.orhanobut:logger:$rootProject.ext.dependencies.log"
     // RxPermission
-    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+    api "com.github.tbruyelle:rxpermissions:$rootProject.ext.dependencies.rxpermission"
     // Glide
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    api "com.github.bumptech.glide:glide:$rootProject.ext.dependencies.glide"
+    annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.dependencies.glidecompiler"
     // RxJava RxAndroid
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.7'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    api "io.reactivex.rxjava2:rxjava:$rootProject.ext.dependencies.rxjava"
+    api "io.reactivex.rxjava2:rxandroid:$rootProject.ext.dependencies.rxAndroid"
 }
