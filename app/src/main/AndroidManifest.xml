@@ -81,7 +81,29 @@
             android:screenOrientation="portrait"
             android:theme="@style/MainStyle" />
 
+        <!-- 切换主题 -->
+        <activity
+            android:name=".activity.SwitchThemeActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainStyle" />
 
+        <!-- 设置页面 -->
+        <activity
+            android:name=".activity.SettingActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainStyle" />
+
+        <!-- 分享页面 -->
+        <activity
+            android:name=".activity.ShareActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainStyle" />
     </application>
 
 </manifest>

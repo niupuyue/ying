@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main_navigation_menu_switch"
+        android:icon="@drawable/icon_home"
+        android:title="@string/main_activity_switch" />
+
+    <item
+        android:id="@+id/main_navigation_menu_setting"
+        android:icon="@drawable/icon_movie"
+        android:title="@string/main_activity_setting" />
+
+    <item
+        android:id="@+id/main_navigation_menu_share"
+        android:icon="@drawable/icon_tally"
+        android:title="@string/main_activity_share" />
+</menu>

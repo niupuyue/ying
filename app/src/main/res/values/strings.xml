@@ -13,4 +13,14 @@
     <string name="welcome_activity_jump">跳过</string>
     <string name="welcome_activity_goto_home">开启旅程</string>
     <string name="splash_activity_count">%ss</string>
+    <string name="main_activity_home">首页</string>
+    <string name="main_activity_movie">电影</string>
+    <string name="main_activity_tally">记账</string>
+    <string name="main_activity_add_tally">添加</string>
+    <string name="navigation_drawer_open">打开</string>
+    <string name="navigation_drawer_close">关闭</string>
+    <string name="main_activity_switch">切换主题</string>
+    <string name="main_activity_setting">设置</string>
+    <string name="main_activity_share">分享</string>
+    <string name="app_exit">一二三四，再来一次</string>
 </resources>
