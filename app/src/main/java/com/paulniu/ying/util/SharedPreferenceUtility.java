@@ -42,6 +42,7 @@ public class SharedPreferenceUtility {
         }
         if (model == null) {
             model = new LocationInfoModel();
+            model.setCityName("北京");
         }
         return model;
     }

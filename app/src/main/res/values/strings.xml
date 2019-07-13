@@ -23,4 +23,8 @@
     <string name="main_activity_setting">设置</string>
     <string name="main_activity_share">分享</string>
     <string name="app_exit">一二三四，再来一次</string>
+    <string name="movie_fragment_want_see">我想看</string>
+    <string name="movie_fragment_directors">导演：</string>
+    <string name="movie_fragment_actors">演员： </string>
+    <string name="movie_fragment_saw">%s人看过</string>
 </resources>

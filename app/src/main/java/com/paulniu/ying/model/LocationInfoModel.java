@@ -1,5 +1,7 @@
 package com.paulniu.ying.model;
 
+import java.io.Serializable;
+
 /**
  * Coder: niupuyue
  * Date: 2019/7/10
@@ -7,7 +9,7 @@ package com.paulniu.ying.model;
  * Desc: 定位对象
  * Version:
  */
-public class LocationInfoModel {
+public class LocationInfoModel implements Serializable {
 
     // 位置code
     private String adCode;

@@ -1,5 +1,10 @@
 package com.paulniu.ying.activity.fragment;
 
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+
+import com.niupuyue.mylibrary.utils.ListenerUtility;
 import com.paulniu.ying.BaseFragment;
 import com.paulniu.ying.R;
 
@@ -11,13 +16,16 @@ import com.paulniu.ying.R;
  * Desc: 首页Fragment
  * Version:
  */
-public class MainHomeFragment extends BaseFragment {
+public class MainHomeFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     public static MainHomeFragment getInstance() {
         MainHomeFragment fragment = new MainHomeFragment();
 
         return fragment;
     }
+
+    private SwipeRefreshLayout srlNewsFragment;
+    private RecyclerView rvNewsFragment;
 
     @Override
     public int getLayoutId() {
@@ -26,21 +34,27 @@ public class MainHomeFragment extends BaseFragment {
 
     @Override
     public void initDateExtra() {
-
     }
 
     @Override
-    public void initViewFindViewById() {
-
+    public void initViewFindViewById(View view) {
+        srlNewsFragment = view.findViewById(R.id.srlNewsFragment);
+        rvNewsFragment = view.findViewById(R.id.rvNewsFragment);
     }
 
     @Override
     public void initListener() {
-
+        ListenerUtility.setOnRefreshListener(this,srlNewsFragment);
     }
 
     @Override
     public void initData() {
+
+        srlNewsFragment.setRefreshing(true);
+    }
+
+    @Override
+    public void onRefresh() {
 
     }
 }

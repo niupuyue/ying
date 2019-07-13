@@ -24,6 +24,7 @@
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:background="@color/white_fff"
+            android:layout_marginTop="5dp"
             app:elevation="16dp"
             app:itemIconTint="@drawable/nav_item_color_state"
             app:itemTextColor="@drawable/nav_item_color_state"

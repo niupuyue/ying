@@ -34,7 +34,7 @@ public abstract class BaseFragment extends Fragment {
 
     public abstract void initDateExtra();
 
-    public abstract void initViewFindViewById();
+    public abstract void initViewFindViewById(View view);
 
     public abstract void initListener();
 
@@ -52,14 +52,14 @@ public abstract class BaseFragment extends Fragment {
     }
 
     private void lazyLoad() {
-        if (isViewCreated && isUIVisiable) {
-            isViewCreated = false;
-            isUIVisiable = false;
+//        if (isViewCreated && isUIVisiable) {
+//            isViewCreated = false;
+//            isUIVisiable = false;
             initDateExtra();
-            initViewFindViewById();
+            initViewFindViewById(mRoot);
             initListener();
             initData();
-        }
+//        }
     }
 
     @Override

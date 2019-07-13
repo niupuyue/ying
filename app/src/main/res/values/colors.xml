@@ -4,7 +4,12 @@
     <color name="colorPrimaryDark">#C2185B</color>
     <color name="colorAccent">#FF5252</color>
 
+    <color name="transparent">#01000000</color>
+
     <color name="gray_999">#999999</color>
     <color name="toolbar_bg">#3399FE</color>
+    <color name="_ff8592">#ff8592</color>
+    <color name="_e3e3e3">#e3e3e3</color>
+    <color name="_feb501">#feb501</color>
 
 </resources>

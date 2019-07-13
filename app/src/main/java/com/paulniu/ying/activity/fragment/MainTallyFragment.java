@@ -1,5 +1,7 @@
 package com.paulniu.ying.activity.fragment;
 
+import android.view.View;
+
 import com.paulniu.ying.BaseFragment;
 import com.paulniu.ying.R;
 
@@ -29,7 +31,7 @@ public class MainTallyFragment extends BaseFragment {
     }
 
     @Override
-    public void initViewFindViewById() {
+    public void initViewFindViewById(View view) {
 
     }
 

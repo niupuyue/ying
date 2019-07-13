@@ -45,4 +45,19 @@ dependencies {
     // RxJava RxAndroid
     api "io.reactivex.rxjava2:rxjava:$rootProject.ext.dependencies.rxjava"
     api "io.reactivex.rxjava2:rxandroid:$rootProject.ext.dependencies.rxAndroid"
+    // baseAdapter
+    api "com.github.CymChad:BaseRecyclerViewAdapterHelper:$rootProject.ext.dependencies.baseAdapter"
+    // retrofit
+    api "com.squareup.retrofit2:retrofit:$rootProject.ext.dependencies.retrofit"
+    api "com.squareup.okhttp3:okhttp:$rootProject.ext.dependencies.okHttp"
+    api "com.squareup.retrofit2:converter-gson:$rootProject.ext.dependencies.retrofit"
+    api "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.dependencies.retrofit"
+    // gson
+    api "com.google.code.gson:gson:$rootProject.ext.dependencies.gson"
+    // cache Cookie
+    api "com.github.franmontiel:PersistentCookieJar:$rootProject.ext.dependencies.cacheCookie"
+    // multidex
+    api "com.android.support:multidex:$rootProject.ext.dependencies.multidex"
+    // starbar
+    api "me.zhanghai.android.materialratingbar:library:$rootProject.ext.dependencies.starbar"
 }

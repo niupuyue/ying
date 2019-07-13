@@ -1,5 +1,7 @@
 package com.paulniu.ying.model;
 
+import java.io.Serializable;
+
 /**
  * Coder: niupuyue (牛谱乐)
  * Date: 2019-07-10
@@ -7,7 +9,7 @@ package com.paulniu.ying.model;
  * Desc: 日常事宜
  * Version:
  */
-public class AffairModel {
+public class AffairModel implements Serializable {
 
     private String affairNote;
 

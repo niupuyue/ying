@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.niupuyue.mylibrary.utils.CustomToastUtility;
-import com.niupuyue.mylibrary.utils.ToastUtility;
 import com.paulniu.ying.R;
 import com.paulniu.ying.activity.fragment.MainHomeFragment;
 import com.paulniu.ying.activity.fragment.MainMovieFragment;
@@ -196,7 +195,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            // 添加记账
+            // 添加记账或者记录todo
+
         }
         return true;
     }
