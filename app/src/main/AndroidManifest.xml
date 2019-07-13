@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.paulniu.ying">
+    package="com.paulniu.ying"
+    android:versionCode="1"
+    android:versionName="0.0.1.999">
 
     <!--用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
@@ -78,6 +80,8 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/MainStyle" />
+
+
     </application>
 
 </manifest>
