@@ -27,4 +27,5 @@
     <string name="movie_fragment_directors">导演：</string>
     <string name="movie_fragment_actors">演员： </string>
     <string name="movie_fragment_saw">%s人看过</string>
+    <string name="app_no_more_data">宝贝，真的没有了o(╯□╰)o</string>
 </resources>

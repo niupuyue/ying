@@ -1,13 +1,16 @@
 package com.paulniu.ying.activity.fragment;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.niupuyue.mylibrary.utils.BaseUtility;
+import com.niupuyue.mylibrary.utils.CustomToastUtility;
 import com.niupuyue.mylibrary.utils.ListenerUtility;
 import com.orhanobut.logger.Logger;
 import com.paulniu.ying.ApiService;
@@ -51,6 +54,13 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
     private MovieAdapter adapter;
     private List<MovieModel.Subjects> subjects = new ArrayList<>();
 
+    private View.OnClickListener footOnClicklistener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            CustomToastUtility.makeTextWarn(getString(R.string.app_no_more_data));
+        }
+    };
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_movie_tab;
@@ -74,9 +84,9 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
 
     @Override
     public void initData() {
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color._feb501), getResources().getColor(R.color.toolbar_bg));
         adapter = new MovieAdapter(R.layout.item_movie, subjects, getContext());
-        adapter.setEnableLoadMore(true);
-        adapter.openLoadAnimation();
+        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -90,11 +100,15 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
                 load(false);
             }
         });
+        View footView = getLayoutInflater().inflate(R.layout.view_recycleview_foot, (ViewGroup) recyclerView.getParent(), false);
+        ListenerUtility.setOnClickListener(footOnClicklistener, footView);
+        adapter.addFooterView(footView);
         recyclerView.setAdapter(adapter);
+        swipeRefreshLayout.setRefreshing(true);
         load(true);
     }
 
-    private void load(boolean isRefresh) {
+    private void load(final boolean isRefresh) {
         if (isRefresh) {
             index = ApiService.START_INDEX;
         } else {
@@ -111,7 +125,17 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
                     public void onNext(MovieModel movieModel) {
                         // 获取到数据，刷新页面
                         if (movieModel != null && !BaseUtility.isEmpty(movieModel.getSubjects())) {
+                            if (isRefresh) {
+                                MainMovieFragment.this.subjects.clear();
+                            }
                             MainMovieFragment.this.subjects.addAll(movieModel.getSubjects());
+                            if (BaseUtility.size(movieModel.getSubjects()) < ApiService.LIMIT) {
+                                // 数据加载完毕
+                                adapter.loadMoreEnd(isRefresh);
+                            } else {
+                                // 数据未加载完毕
+                                adapter.loadMoreComplete();
+                            }
                         }
                     }
 
@@ -126,8 +150,8 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
                     @Override
                     public void onComplete() {
                         if (adapter != null) {
-                            adapter.loadMoreEnd();
                             swipeRefreshLayout.setRefreshing(false);
+                            adapter.loadMoreComplete();
                         }
                     }
                 });
