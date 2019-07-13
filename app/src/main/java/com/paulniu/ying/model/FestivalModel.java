@@ -2,6 +2,10 @@ package com.paulniu.ying.model;
 
 import java.io.Serializable;
 
+import io.realm.RealmModel;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
+
 /**
  * Coder: niupuyue (牛谱乐)
  * Date: 2019-07-10
@@ -9,11 +13,23 @@ import java.io.Serializable;
  * Desc: 节日信息
  * Version:
  */
-public class FestivalModel implements Serializable {
+@RealmClass
+public class FestivalModel implements Serializable, RealmModel {
+
+    @PrimaryKey
+    private int id;
 
     private String festivalName;
 
     private String festivalNote;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getFestivalNote() {
         return festivalNote;

@@ -2,6 +2,10 @@ package com.paulniu.ying.model;
 
 import java.io.Serializable;
 
+import io.realm.RealmModel;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.RealmClass;
+
 /**
  * Coder: niupuyue (牛谱乐)
  * Date: 2019-07-13
@@ -9,7 +13,11 @@ import java.io.Serializable;
  * Desc: 设置主题信息model
  * Version:
  */
-public class ThemeInfoModel implements Serializable {
+@RealmClass
+public class ThemeInfoModel implements Serializable, RealmModel {
+
+    @PrimaryKey
+    private int id;
 
     private long themeTime;
 
@@ -18,6 +26,14 @@ public class ThemeInfoModel implements Serializable {
     private String themePhoto;
 
     private boolean isSetting;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public boolean isSetting() {
         return isSetting;

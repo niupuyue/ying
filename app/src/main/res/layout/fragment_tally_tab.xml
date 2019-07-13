@@ -5,9 +5,33 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/et01"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="记账"/>
+        android:hint="请输入要插入或者要删除的节日" />
 
+    <Button
+        android:id="@+id/btn01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加" />
+
+    <Button
+        android:id="@+id/btn02"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="删除" />
+
+    <Button
+        android:id="@+id/btn03"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="清除" />
+
+    <Button
+        android:id="@+id/btn04"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="浏览" />
 </LinearLayout>
