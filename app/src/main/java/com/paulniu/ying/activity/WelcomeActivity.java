@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.niupuyue.mylibrary.utils.BaseUtility;
 import com.niupuyue.mylibrary.utils.ListenerUtility;
-import com.paulniu.ying.MainActivity;
 import com.paulniu.ying.R;
 import com.paulniu.ying.adapter.WelcomeAdapter;
 import com.paulniu.ying.base.BaseActivity;

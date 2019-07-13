@@ -23,7 +23,6 @@ import com.niupuyue.mylibrary.utils.BaseUtility;
 import com.niupuyue.mylibrary.utils.ListenerUtility;
 import com.niupuyue.mylibrary.widgets.CircleImageView;
 import com.niupuyue.mylibrary.widgets.SimpleDialog;
-import com.paulniu.ying.MainActivity;
 import com.paulniu.ying.R;
 import com.paulniu.ying.base.BaseActivity;
 import com.paulniu.ying.callback.ILocationCallback;

@@ -1,12 +1,12 @@
-package com.paulniu.ying;
+package com.paulniu.ying.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.amap.api.location.AMapLocation;
 import com.orhanobut.logger.Logger;
+import com.paulniu.ying.R;
 import com.paulniu.ying.base.BaseActivity;
 import com.paulniu.ying.callback.ILocationCallback;
 import com.paulniu.ying.util.LocationUtility;
