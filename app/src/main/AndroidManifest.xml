@@ -42,13 +42,12 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="844a9f959433fc5a5dddca5985a4d0dd" />
-
         <service android:name="com.amap.api.location.APSService" />
 
         <!-- 是否改变了引导页 -->
         <meta-data
             android:name="IsChangeSplash"
-            android:value="true" />
+            android:value="false" />
 
         <!-- 闪屏页面 -->
         <activity
