@@ -50,6 +50,7 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
+    private View footView;
 
     private int index = ApiService.START_INDEX;
     private MovieAdapter adapter;
@@ -102,7 +103,8 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
                 load(false);
             }
         });
-        View footView = getLayoutInflater().inflate(R.layout.view_recycleview_foot, (ViewGroup) recyclerView.getParent(), false);
+        footView = getLayoutInflater().inflate(R.layout.view_recycleview_foot, (ViewGroup) recyclerView.getParent(), false);
+        BaseUtility.resetVisibility(footView, View.GONE);
         ListenerUtility.setOnClickListener(footOnClicklistener, footView);
         adapter.addFooterView(footView);
         recyclerView.setAdapter(adapter);
@@ -133,6 +135,7 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
                             MainMovieFragment.this.subjects.addAll(movieModel.getSubjects());
                             if (BaseUtility.size(movieModel.getSubjects()) < ApiService.LIMIT) {
                                 // 数据加载完毕
+                                BaseUtility.resetVisibility(footView, View.VISIBLE);
                                 adapter.loadMoreEnd(isRefresh);
                             } else {
                                 // 数据未加载完毕
