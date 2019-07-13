@@ -17,6 +17,7 @@ import com.paulniu.ying.ApiService;
 import com.paulniu.ying.BaseFragment;
 import com.paulniu.ying.R;
 import com.paulniu.ying.RetorfitFactory;
+import com.paulniu.ying.activity.MovieDetailActivity;
 import com.paulniu.ying.adapter.MovieAdapter;
 import com.paulniu.ying.constant.AppConfig;
 import com.paulniu.ying.model.data.MovieModel;
@@ -91,7 +92,8 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 // 跳转到电影详情页面
-                Logger.e(TAG, adapter.getData().get(position));
+                Logger.e(TAG, adapter.getData().get(position).toString());
+                startActivity(MovieDetailActivity.getIntent(getContext()));
             }
         });
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {

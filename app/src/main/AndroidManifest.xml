@@ -103,6 +103,30 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/MainStyle" />
+
+        <!-- 电影详情 -->
+        <activity
+            android:name=".activity.MovieDetailActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainStyle" />
+
+        <!-- 添加记账 -->
+        <activity
+            android:name=".activity.AddTallyActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainStyle" />
+
+        <!-- 添加事务 -->
+        <activity
+            android:name=".activity.AddAffairActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainStyle" />
     </application>
 
 </manifest>
