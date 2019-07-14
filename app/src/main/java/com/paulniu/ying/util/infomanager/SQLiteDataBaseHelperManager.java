@@ -1,5 +1,6 @@
-package com.paulniu.ying.util;
+package com.paulniu.ying.util.infomanager;
 
+import com.paulniu.ying.model.AffairModel;
 import com.paulniu.ying.model.ThemeInfoModel;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
  * Desc: 数据库操作接口
  * Version:
  */
-public class SQLiteDataBaseHelper {
+public class SQLiteDataBaseHelperManager {
 
     // 获取数据库中所有已经设置过的主题样式
     public static List<ThemeInfoModel> getSettedThemeInfoes() {
@@ -27,5 +28,14 @@ public class SQLiteDataBaseHelper {
 
         return model;
     }
+
+    // 获取获取的事务列表
+    public static List<AffairModel> getAllAffairModels(){
+        List<AffairModel> affairModels = new ArrayList<>();
+
+        return affairModels;
+    }
+
+    
 
 }

@@ -8,8 +8,10 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.paulniu.ying.constant.AppConfig;
 
+import io.realm.DynamicRealm;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmMigration;
 import io.realm.rx.RealmObservableFactory;
 
 /**
@@ -31,6 +33,7 @@ public class App extends Application {
     public static Application getApplication() {
         return application;
     }
+
 
     @Override
     public void onCreate() {
@@ -56,7 +59,12 @@ public class App extends Application {
                 .name(AppConfig.REALM_SQLITE_NAME)
                 .rxFactory(new RealmObservableFactory())
                 .schemaVersion(AppConfig.REALM_SQLITE_VERSION)
-                .inMemory()
+                .migration(new RealmMigration() {
+                    @Override
+                    public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
+
+                    }
+                })
                 .build();
         Realm.setDefaultConfiguration(config);
     }

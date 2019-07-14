@@ -3,6 +3,7 @@ package com.paulniu.ying.model;
 import java.io.Serializable;
 
 import io.realm.RealmModel;
+import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
@@ -13,25 +14,13 @@ import io.realm.annotations.RealmClass;
  * Desc: 日常事宜
  * Version:
  */
-@RealmClass
-public class AffairModel implements Serializable, RealmModel {
+public class AffairModel extends RealmObject implements Serializable {
 
-    @PrimaryKey
-    private int id;
+    public String affairNote;
 
-    private String affairNote;
+    public long affairTime = 0L;
 
-    private long affairTime = 0L;
-
-    private int affairType = 0;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    public int affairType = 0;
 
     public String getAffairNote() {
         return affairNote;

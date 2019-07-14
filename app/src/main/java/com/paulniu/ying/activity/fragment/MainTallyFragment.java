@@ -10,6 +10,9 @@ import com.orhanobut.logger.Logger;
 import com.paulniu.ying.BaseFragment;
 import com.paulniu.ying.R;
 import com.paulniu.ying.model.AffairModel;
+import com.paulniu.ying.model.Dog;
+
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmAsyncTask;
@@ -111,25 +114,32 @@ public class MainTallyFragment extends BaseFragment implements View.OnClickListe
                      *  这时候我们需要使用RealmList的方式
                      */
                     // 这里我需要做异步操作和执行之后的回调，需要使用下面的方式
-                    task = mRealm.executeTransactionAsync(new Realm.Transaction() {
+                    final AffairModel model = new AffairModel();
+                    model.setAffairType(0);
+                    model.setAffairTime(System.currentTimeMillis());
+                    model.setAffairNote(BaseUtility.getText(et01));
+                    mRealm.executeTransaction(new Realm.Transaction() {
                         @Override
                         public void execute(Realm realm) {
-                            AffairModel model = new AffairModel();
-                            model.setAffairType(0);
-                            model.setAffairTime(System.currentTimeMillis());
-                            model.setAffairNote(BaseUtility.getText(et01));
-                        }
-                    }, new Realm.Transaction.OnSuccess() {
-                        @Override
-                        public void onSuccess() {
-                            Logger.e("插入成功");
-                        }
-                    }, new Realm.Transaction.OnError() {
-                        @Override
-                        public void onError(Throwable error) {
-                            Logger.e("插入失败");
+                            realm.copyToRealm(model);
                         }
                     });
+                   task =  mRealm.executeTransactionAsync(new Realm.Transaction() {
+                       @Override
+                       public void execute(Realm realm) {
+                           realm.copyToRealm(model);
+                       }
+                   }, new Realm.Transaction.OnSuccess() {
+                       @Override
+                       public void onSuccess() {
+
+                       }
+                   }, new Realm.Transaction.OnError() {
+                       @Override
+                       public void onError(Throwable error) {
+
+                       }
+                   });
                     /**
                      * realm可以插入一个json对象
                      * // 一个city model

@@ -2,7 +2,6 @@ package com.paulniu.ying.util.infomanager;
 
 import com.niupuyue.mylibrary.utils.BaseUtility;
 import com.paulniu.ying.model.ThemeInfoModel;
-import com.paulniu.ying.util.SQLiteDataBaseHelper;
 
 import java.util.List;
 
@@ -29,14 +28,14 @@ public class ThemeInfoManager {
 
     public synchronized ThemeInfoModel getCurrentThemeInfo() {
         if (null == themeInfoModel) {
-            themeInfoModel = SQLiteDataBaseHelper.getCurThemeInfo();
+            themeInfoModel = SQLiteDataBaseHelperManager.getCurThemeInfo();
         }
         return themeInfoModel;
     }
 
     public synchronized List<ThemeInfoModel> getThemeInfoes() {
         if (BaseUtility.isEmpty(themeInfoes)) {
-            themeInfoes = SQLiteDataBaseHelper.getSettedThemeInfoes();
+            themeInfoes = SQLiteDataBaseHelperManager.getSettedThemeInfoes();
         }
         return themeInfoes;
     }
