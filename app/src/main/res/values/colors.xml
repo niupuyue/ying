@@ -5,6 +5,7 @@
     <color name="colorAccent">#FF5252</color>
 
     <color name="transparent">#01000000</color>
+    <color name="transparent_gray">#cc000000</color>
 
     <color name="gray_999">#999999</color>
     <color name="toolbar_bg">#3399FE</color>

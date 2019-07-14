@@ -1,4 +1,4 @@
-package com.paulniu.ying.widget;
+package com.paulniu.ying.widget.popup;
 
 import android.content.Context;
 import android.graphics.Color;

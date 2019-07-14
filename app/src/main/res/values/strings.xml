@@ -43,5 +43,9 @@
     <string name="item_affair_max">急</string>
     <string name="item_affair_middle">事</string>
     <string name="item_affair_low">低</string>
+    <string name="pop_add_affair_type_high">紧急</string>
+    <string name="pop_add_affair_type_low">待办</string>
+    <string name="pop_add_affair_type_middle">普通</string>
+    <string name="app_add_affair_error">新增事务数据失败，请稍后重试！</string>
 
 </resources>

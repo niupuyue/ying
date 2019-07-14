@@ -55,7 +55,7 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="@string/addaffair_activity_type" />
+                android:text="@string/pop_add_affair_type_middle" />
 
         </LinearLayout>
 

@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.paulniu.ying.R;
 import com.paulniu.ying.base.BaseActivity;
-import com.paulniu.ying.widget.AddAffairOrTallyPop;
+import com.paulniu.ying.widget.popup.AddAffairOrTallyPop;
 
 /**
  * Coder: niupuyue (牛谱乐)

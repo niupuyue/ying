@@ -21,7 +21,7 @@ import com.paulniu.ying.activity.fragment.MainHomeFragment;
 import com.paulniu.ying.activity.fragment.MainMovieFragment;
 import com.paulniu.ying.activity.fragment.MainTallyFragment;
 import com.paulniu.ying.base.BaseActivity;
-import com.paulniu.ying.widget.AddAffairOrTallyPop;
+import com.paulniu.ying.widget.popup.AddAffairOrTallyPop;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
