@@ -50,7 +50,6 @@ public class MainHomeFragment extends BaseFragment implements SwipeRefreshLayout
     @Override
     public void initData() {
 
-        srlNewsFragment.setRefreshing(true);
     }
 
     @Override

@@ -61,4 +61,6 @@ dependencies {
     api "com.android.support:multidex:$rootProject.ext.dependencies.multidex"
     // starbar
     api "me.zhanghai.android.materialratingbar:library:$rootProject.ext.dependencies.starbar"
+    // autoLayout
+    api "com.zhy:autolayout:$rootProject.ext.dependencies.autoLayout"
 }

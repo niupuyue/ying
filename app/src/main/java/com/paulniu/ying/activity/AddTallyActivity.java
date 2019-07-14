@@ -2,7 +2,10 @@ package com.paulniu.ying.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 
+import com.paulniu.ying.R;
 import com.paulniu.ying.base.BaseActivity;
 
 /**
@@ -20,4 +23,9 @@ public class AddTallyActivity extends BaseActivity {
         return intent;
     }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_addtally);
+    }
 }

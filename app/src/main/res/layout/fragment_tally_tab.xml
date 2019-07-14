@@ -1,37 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et01"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        style="@style/TabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="请输入要插入或者要删除的节日" />
+        android:layout_height="?attr/actionBarSize"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:tabIndicatorColor="#e62424"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="#e62424"
+        app:tabTextAppearance="@android:style/TextAppearance.Small"
+        app:tabTextColor="@color/gray_666" />
 
-    <Button
-        android:id="@+id/btn01"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="添加" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <Button
-        android:id="@+id/btn02"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="删除" />
-
-    <Button
-        android:id="@+id/btn03"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="清除" />
-
-    <Button
-        android:id="@+id/btn04"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="浏览" />
 </LinearLayout>

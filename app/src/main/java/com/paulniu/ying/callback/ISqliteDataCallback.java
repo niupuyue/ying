@@ -1,5 +1,7 @@
 package com.paulniu.ying.callback;
 
+import com.paulniu.ying.model.AffairModel;
+
 import java.util.List;
 
 import io.realm.RealmObject;
@@ -17,6 +19,6 @@ public interface ISqliteDataCallback {
 
     void onError();
 
-    void getResult(List<RealmObject> results);
+    void getResult(boolean isRefresh,List<AffairModel> results);
 
 }

@@ -16,6 +16,10 @@ import io.realm.annotations.RealmClass;
  */
 public class AffairModel extends RealmObject implements Serializable {
 
+    public static final int AFFAIR_TYPE_MAX = 0;
+    public static final int AFFAIR_TYPE_MIDDLE = 1;
+    public static final int AFFAIR_TYPE_LOW = 2;
+
     public String affairNote;
 
     public long affairTime = 0L;

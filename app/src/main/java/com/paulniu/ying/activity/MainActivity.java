@@ -212,7 +212,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             });
             PopupWindowCompat.showAsDropDown(pop, findViewById(R.id.action_add), -100, -50, Gravity.START);
         }
-        return false;
+        return true;
     }
 
     @Override

@@ -2,7 +2,14 @@
     <string name="app_name">英</string>
 
     <!-- 通用 -->
-
+    <string name="app_save_data_error">保存数据失败，请稍后重试！</string>
+    <string name="app_save_data_success">保存数据成功！</string>
+    <string name="app_load_data_error">加载数据失败，请稍后重试！</string>
+    <string name="app_exit">一二三四，再来一次</string>
+    <string name="app_cancel">取消</string>
+    <string name="app_submit">提交</string>
+    <string name="app_no_more_data">宝贝，真的没有了o(╯□╰)o</string>
+    <string name="app_foot_no_more_data">---    宝贝，真没有了    ---</string>
 
     <!-- 闪屏页面 -->
     <string name="splash_activity_bless_default">你好</string>
@@ -15,20 +22,26 @@
     <string name="splash_activity_count">%ss</string>
     <string name="main_activity_home">首页</string>
     <string name="main_activity_movie">电影</string>
-    <string name="main_activity_tally">记账</string>
+    <string name="main_activity_tally">记录</string>
     <string name="main_activity_add_tally">添加</string>
     <string name="navigation_drawer_open">打开</string>
     <string name="navigation_drawer_close">关闭</string>
     <string name="main_activity_switch">切换主题</string>
     <string name="main_activity_setting">设置</string>
     <string name="main_activity_share">分享</string>
-    <string name="app_exit">一二三四，再来一次</string>
     <string name="movie_fragment_want_see">我想看</string>
     <string name="movie_fragment_directors">导演：</string>
     <string name="movie_fragment_actors">演员： </string>
     <string name="movie_fragment_saw">%s人看过</string>
-    <string name="app_no_more_data">宝贝，真的没有了o(╯□╰)o</string>
-    <string name="app_foot_no_more_data">---    宝贝，真没有了    ---</string>
     <string name="pop_add_affair">事务</string>
     <string name="pop_add_tally">记账</string>
+    <string name="addaffair_activity_hint">请输入事务的备注</string>
+    <string name="addaffair_activity_time">时间</string>
+    <string name="addaffair_activity_type">类型</string>
+
+    <!-- 事务item -->
+    <string name="item_affair_max">急</string>
+    <string name="item_affair_middle">事</string>
+    <string name="item_affair_low">低</string>
+
 </resources>

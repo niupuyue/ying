@@ -1,6 +1,7 @@
 package com.paulniu.ying.util.impl;
 
 import com.paulniu.ying.callback.ISqliteDataCallback;
+import com.paulniu.ying.model.AffairModel;
 
 import java.util.List;
 
@@ -106,13 +107,13 @@ public class SQLiteDataBaseImpl {
     }
 
     // 查询所有数据
-    public void queryAll(Class clz, final ISqliteDataCallback callback) {
-        final RealmResults<RealmObject> results = getRealm().where(clz).findAllAsync();
-        results.addChangeListener(new RealmChangeListener<RealmResults<RealmObject>>() {
+    public void queryAll(final boolean isRefresh, Class clz, final ISqliteDataCallback callback) {
+        final RealmResults<AffairModel> results = getRealm().where(clz).findAllAsync();
+        results.addChangeListener(new RealmChangeListener<RealmResults<AffairModel>>() {
             @Override
-            public void onChange(RealmResults<RealmObject> realmObjects) {
+            public void onChange(RealmResults<AffairModel> realmObjects) {
                 if (null != callback) {
-                    callback.getResult(getRealm().copyFromRealm(results));
+                    callback.getResult(isRefresh,getRealm().copyFromRealm(results));
                 }
             }
         });

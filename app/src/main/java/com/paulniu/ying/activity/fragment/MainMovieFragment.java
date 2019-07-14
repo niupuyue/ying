@@ -147,6 +147,7 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
                     @Override
                     public void onError(Throwable e) {
                         // 刷新失败
+                        CustomToastUtility.makeTextError(getString(R.string.app_load_data_error));
                         if (adapter != null) {
                             adapter.loadMoreFail();
                         }
