@@ -1,5 +1,7 @@
 package com.paulniu.ying.activity.fragment;
 
+import android.support.v4.widget.PopupWindowCompat;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,8 +11,12 @@ import com.niupuyue.mylibrary.utils.ListenerUtility;
 import com.orhanobut.logger.Logger;
 import com.paulniu.ying.BaseFragment;
 import com.paulniu.ying.R;
+import com.paulniu.ying.activity.AddAffairActivity;
+import com.paulniu.ying.activity.AddTallyActivity;
+import com.paulniu.ying.activity.MainActivity;
 import com.paulniu.ying.model.AffairModel;
 import com.paulniu.ying.model.Dog;
+import com.paulniu.ying.widget.AddAffairOrTallyPop;
 
 import java.util.List;
 
@@ -175,6 +181,7 @@ public class MainTallyFragment extends BaseFragment implements View.OnClickListe
 
                 break;
             case R.id.btn03:
+                // 添加记账或者记录todo
 
                 break;
             case R.id.btn04:

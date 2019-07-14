@@ -8,8 +8,10 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,6 +21,7 @@ import com.paulniu.ying.activity.fragment.MainHomeFragment;
 import com.paulniu.ying.activity.fragment.MainMovieFragment;
 import com.paulniu.ying.activity.fragment.MainTallyFragment;
 import com.paulniu.ying.base.BaseActivity;
+import com.paulniu.ying.widget.AddAffairOrTallyPop;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -196,9 +199,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
             // 添加记账或者记录todo
+            final AddAffairOrTallyPop pop = new AddAffairOrTallyPop(MainActivity.this, new AddAffairOrTallyPop.AddAffairOrTallyListener() {
+                @Override
+                public void gotoAffair() {
+                    startActivity(AddAffairActivity.getIntent(MainActivity.this));
+                }
 
+                @Override
+                public void gotoTally() {
+                    startActivity(AddTallyActivity.getIntent(MainActivity.this));
+                }
+            });
+            PopupWindowCompat.showAsDropDown(pop, findViewById(R.id.action_add), -100, -50, Gravity.START);
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -217,4 +231,5 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
         return false;
     }
+
 }

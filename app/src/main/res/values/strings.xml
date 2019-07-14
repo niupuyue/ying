@@ -29,4 +29,6 @@
     <string name="movie_fragment_saw">%s人看过</string>
     <string name="app_no_more_data">宝贝，真的没有了o(╯□╰)o</string>
     <string name="app_foot_no_more_data">---    宝贝，真没有了    ---</string>
+    <string name="pop_add_affair">事务</string>
+    <string name="pop_add_tally">记账</string>
 </resources>
