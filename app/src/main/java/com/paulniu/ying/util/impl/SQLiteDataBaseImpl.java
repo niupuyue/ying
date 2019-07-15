@@ -1,6 +1,6 @@
 package com.paulniu.ying.util.impl;
 
-import com.paulniu.ying.callback.IRealmQueryCallback;
+import com.paulniu.ying.callback.IRealmQueryAffairCallback;
 import com.paulniu.ying.model.AffairModel;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class SQLiteDataBaseImpl {
     }
 
     // 添加数据到数据库
-    public RealmAsyncTask add(final RealmObject realmObject, final IRealmQueryCallback callback) {
+    public RealmAsyncTask add(final RealmObject realmObject, final IRealmQueryAffairCallback callback) {
         RealmAsyncTask task = null;
         try {
             getRealm().executeTransactionAsync(new Realm.Transaction() {
@@ -64,8 +64,9 @@ public class SQLiteDataBaseImpl {
         return task;
     }
 
+
     // 添加数据到数据库(集合)
-    public RealmAsyncTask addAll(List<RealmObject> realmObjects, IRealmQueryCallback callback) {
+    public RealmAsyncTask addAll(List<RealmObject> realmObjects, IRealmQueryAffairCallback callback) {
         RealmAsyncTask task = null;
         try {
 
@@ -76,7 +77,7 @@ public class SQLiteDataBaseImpl {
     }
 
     // 删除数据库中的数据
-    public RealmAsyncTask delete(final RealmObject realmObject, final IRealmQueryCallback callback) {
+    public RealmAsyncTask delete(final RealmObject realmObject, final IRealmQueryAffairCallback callback) {
         RealmAsyncTask task = null;
         try {
             task = getRealm().executeTransactionAsync(new Realm.Transaction() {
@@ -106,7 +107,7 @@ public class SQLiteDataBaseImpl {
     }
 
     // 查询所有数据
-    public void queryAll(final boolean isRefresh, Class clz, final IRealmQueryCallback callback) {
+    public void queryAll(final boolean isRefresh, Class clz, final IRealmQueryAffairCallback callback) {
         final RealmResults<AffairModel> results = getRealm().where(clz).findAllAsync();
         results.addChangeListener(new RealmChangeListener<RealmResults<AffairModel>>() {
             @Override

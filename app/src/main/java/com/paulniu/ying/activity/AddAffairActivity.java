@@ -21,7 +21,7 @@ import com.niupuyue.mylibrary.utils.TimeUtility;
 import com.niupuyue.mylibrary.widgets.datepicker.CustomDatePicker;
 import com.paulniu.ying.R;
 import com.paulniu.ying.base.BaseActivity;
-import com.paulniu.ying.callback.IRealmQueryCallback;
+import com.paulniu.ying.callback.IRealmQueryAffairCallback;
 import com.paulniu.ying.model.AffairModel;
 import com.paulniu.ying.util.impl.SQLiteDataBaseImpl;
 import com.paulniu.ying.widget.popup.AddAffairTypePop;
@@ -35,7 +35,7 @@ import java.util.List;
  * Desc: 添加事务
  * Version:
  */
-public class AddAffairActivity extends BaseActivity implements View.OnClickListener, IRealmQueryCallback {
+public class AddAffairActivity extends BaseActivity implements View.OnClickListener, IRealmQueryAffairCallback {
 
     public static Intent getIntent(Context context) {
         Intent intent = new Intent(context, AddAffairActivity.class);

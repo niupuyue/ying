@@ -1,12 +1,18 @@
 package com.paulniu.ying.database;
 
+import com.niupuyue.mylibrary.utils.TimeUtility;
 import com.paulniu.ying.callback.IBaseRealmCallback;
-import com.paulniu.ying.callback.IRealmQueryCallback;
+import com.paulniu.ying.callback.IRealmQueryAffairCallback;
+import com.paulniu.ying.callback.IRealmQueryFestivalCallback;
+import com.paulniu.ying.model.AffairModel;
+import com.paulniu.ying.model.FestivalModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
+import io.realm.OrderedCollectionChangeSet;
+import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmAsyncTask;
 import io.realm.RealmObject;
@@ -36,34 +42,6 @@ public class SQLiteDataBaseHelper {
             mRealm = Realm.getDefaultInstance();
         }
         return mRealm;
-    }
-
-    // 同步插入数据 没有primarykey
-    public void add(final RealmObject obj) {
-        try {
-            getRealm().executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    getRealm().copyToRealm(obj);
-                }
-            });
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    // 同步插入数据，有primarykey
-    public void addWithKey(final RealmObject obj) {
-        try {
-            getRealm().executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    getRealm().insertOrUpdate(obj);
-                }
-            });
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     // 异步插入数据 没有primarykey
@@ -126,40 +104,6 @@ public class SQLiteDataBaseHelper {
         return task;
     }
 
-    // 查找所有数据
-    public List<Object> getAll(final Class clz, IRealmQueryCallback callback){
-        List<Object> results = new ArrayList<>();
-        try {
-            getRealm().executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    RealmResults rr = getRealm().where(clz).findAll();
-                    results = Arrays.asList(rr.toArray());
-                }
-            });
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
-
-    // 同步删除所有数据
-    public void deleteAll(final Class clz) {
-        try {
-            getRealm().executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    // 先遍历所有数据，然后再删除
-                    RealmResults results = getRealm().where(clz).findAll();
-                    if (results.size() > 0) {
-                        results.deleteAllFromRealm();
-                    }
-                }
-            });
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
     // 异步删除所有数据
     public RealmAsyncTask deleteAllAsync(final Class clz, final IBaseRealmCallback callback) {
         RealmAsyncTask task = null;
@@ -193,5 +137,365 @@ public class SQLiteDataBaseHelper {
         return task;
     }
 
+    /**
+     * 同步查询所有的事务
+     *
+     * @return
+     */
+    public void queryAllAffair(final IRealmQueryAffairCallback callback) {
+        try {
+            getRealm().executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<AffairModel> results = getRealm().where(AffairModel.class).findAll();
+                    List<AffairModel> affairModels = getRealm().copyFromRealm(results);
+                    if (null != callback) {
+                        callback.getResult(true, affairModels);
+                    }
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    if (null != callback) {
+                        callback.onSuccess();
+                    }
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    if (null != callback) {
+                        callback.onError();
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 
+    /**
+     * 异步加载所有的事务
+     */
+    public void queryAllAffairAsync(final IRealmQueryAffairCallback callback) {
+        try {
+            getRealm().executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    final RealmResults<AffairModel> results = getRealm().where(AffairModel.class).findAllAsync();
+                    results.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<AffairModel>>() {
+                        @Override
+                        public void onChange(RealmResults<AffairModel> affairModels, OrderedCollectionChangeSet changeSet) {
+                            if (callback != null) {
+                                List<AffairModel> result = getRealm().copyFromRealm(affairModels);
+                                callback.getResult(true, results);
+                            }
+                        }
+                    });
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    if (null != callback) {
+                        callback.onSuccess();
+                    }
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    if (callback != null) {
+                        callback.onError();
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 异步加载某一天所有事务
+     */
+    public void queryAffairByDay(final boolean isRefresh, final long time, final IRealmQueryAffairCallback callback) {
+        try {
+            getRealm().executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    long targetTime;
+                    if (time < 0) {
+                        targetTime = System.currentTimeMillis();
+                    } else {
+                        targetTime = time;
+                    }
+                    RealmResults<AffairModel> affairModels = getRealm().where(AffairModel.class).findAllAsync();
+                    affairModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<AffairModel>>() {
+                        @Override
+                        public void onChange(RealmResults<AffairModel> affairModels, OrderedCollectionChangeSet changeSet) {
+                            if (affairModels.size() > 0) {
+                                List<AffairModel> temp = getRealm().copyFromRealm(affairModels);
+                                List<AffairModel> result = new ArrayList<>();
+                                for (AffairModel model : temp) {
+                                    if (TimeUtility.isToday(new Date(model.getAffairTime()))) {
+                                        result.add(model);
+                                    }
+                                }
+                                if (null != callback) {
+                                    callback.getResult(isRefresh, result);
+                                }
+                            }
+                        }
+                    });
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    if (null != callback) {
+                        callback.onSuccess();
+                    }
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    if (null != callback) {
+                        callback.onError();
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 异步加载某一个月的所有事务
+     */
+    public void queryAffairByMonth(final boolean isRefresh, final long time, final IRealmQueryAffairCallback callback) {
+        try {
+            getRealm().executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    long targetTime;
+                    if (time < 0) {
+                        targetTime = System.currentTimeMillis();
+                    } else {
+                        targetTime = time;
+                    }
+                    RealmResults<AffairModel> affairModels = getRealm().where(AffairModel.class).findAllAsync();
+                    affairModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<AffairModel>>() {
+                        @Override
+                        public void onChange(RealmResults<AffairModel> affairModels, OrderedCollectionChangeSet changeSet) {
+                            if (affairModels.size() > 0) {
+                                List<AffairModel> temp = getRealm().copyFromRealm(affairModels);
+                                List<AffairModel> results = new ArrayList<>();
+                                for (AffairModel model : temp) {
+                                    if (TimeUtility.isThisMonth(new Date(model.getAffairTime()))) {
+                                        results.add(model);
+                                    }
+                                }
+                                if (null != callback) {
+                                    callback.getResult(isRefresh, results);
+                                }
+                            }
+                        }
+                    });
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    if (null != callback) {
+                        callback.onSuccess();
+                    }
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    if (null != callback) {
+                        callback.onError();
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 异步加载某一个星期的所有事务
+     */
+    public void queryAffairByWeek(final boolean isRefresh, final long time, final IRealmQueryAffairCallback callback) {
+        try {
+            getRealm().executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    long targetTime;
+                    if (time < 0) {
+                        targetTime = System.currentTimeMillis();
+                    } else {
+                        targetTime = time;
+                    }
+                    RealmResults<AffairModel> affairModels = getRealm().where(AffairModel.class).findAllAsync();
+                    affairModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<AffairModel>>() {
+                        @Override
+                        public void onChange(RealmResults<AffairModel> affairModels, OrderedCollectionChangeSet changeSet) {
+                            if (affairModels.size() > 0) {
+                                List<AffairModel> temp = getRealm().copyFromRealm(affairModels);
+                                List<AffairModel> results = new ArrayList<>();
+                                for (AffairModel model : temp) {
+                                    if (TimeUtility.isThisWeek(new Date(model.getAffairTime()))) {
+                                        results.add(model);
+                                    }
+                                }
+                                if (null != callback) {
+                                    callback.getResult(isRefresh, results);
+                                }
+                            }
+                        }
+                    });
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    if (null != callback) {
+                        callback.onSuccess();
+                    }
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    if (null != callback) {
+                        callback.onError();
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 删除指定的事务
+     */
+    public void deleteAffairByTime(final long time, final IBaseRealmCallback callback) {
+        try {
+            getRealm().executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<AffairModel> results = getRealm().where(AffairModel.class).equalTo("affairTime", time).findAllAsync();
+                    results.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<AffairModel>>() {
+                        @Override
+                        public void onChange(RealmResults<AffairModel> affairModels, OrderedCollectionChangeSet changeSet) {
+                            if (affairModels.size() > 0) {
+                                affairModels.deleteAllFromRealm();
+                            }
+                            if (null != callback) {
+                                callback.onSuccess();
+                            }
+                        }
+                    });
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    if (null != callback) {
+                        callback.onError();
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 查询所有的节日
+     */
+    public void queryAllFestival(final boolean isRefresh, final IRealmQueryFestivalCallback callback) {
+        try {
+            getRealm().executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<FestivalModel> festivalModels = getRealm().where(FestivalModel.class).findAllAsync();
+                    festivalModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<FestivalModel>>() {
+                        @Override
+                        public void onChange(RealmResults<FestivalModel> festivalModels, OrderedCollectionChangeSet changeSet) {
+                            if (festivalModels.size() > 0) {
+                                List<FestivalModel> results = getRealm().copyFromRealm(festivalModels);
+                                if (null != callback) {
+                                    callback.getResult(isRefresh, results);
+                                }
+                            }
+                        }
+                    });
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    if (null != callback) {
+                        callback.onSuccess();
+                    }
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    if (null != callback) {
+                        callback.onError();
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 判断当天是否是节日
+     */
+    public void queryTadayFestival(final IRealmQueryFestivalCallback callback) {
+        try {
+            getRealm().executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<FestivalModel> festivalModels = getRealm().where(FestivalModel.class).findAllAsync();
+                    festivalModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<FestivalModel>>() {
+                        @Override
+                        public void onChange(RealmResults<FestivalModel> festivalModels, OrderedCollectionChangeSet changeSet) {
+                            if (festivalModels.size() > 0) {
+                                List<FestivalModel> temp = getRealm().copyFromRealm(festivalModels);
+                                FestivalModel model = null;
+                                for (FestivalModel festivalModel : temp) {
+                                    if (TimeUtility.isToday(new Date(festivalModel.getFestivalDate()))) {
+                                        model = festivalModel;
+                                        break;
+                                    }
+                                }
+                                if (null != callback) {
+                                    callback.getFestival(model);
+                                }
+                            }
+                        }
+                    });
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    if (null != callback) {
+                        callback.onSuccess();
+                    }
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    if (null != callback) {
+                        callback.onError();
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
 }

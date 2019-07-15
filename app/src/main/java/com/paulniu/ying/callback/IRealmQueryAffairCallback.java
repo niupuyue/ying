@@ -13,7 +13,7 @@ import io.realm.RealmObject;
  * Desc: 数据库操作回调
  * Version:
  */
-public interface IRealmQueryCallback extends IBaseRealmCallback {
+public interface IRealmQueryAffairCallback extends IBaseRealmCallback {
 
     void getResult(boolean isRefresh, List<AffairModel> results);
 

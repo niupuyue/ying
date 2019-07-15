@@ -13,7 +13,7 @@ import com.paulniu.ying.ApiService;
 import com.paulniu.ying.BaseFragment;
 import com.paulniu.ying.R;
 import com.paulniu.ying.adapter.AffairListAdapter;
-import com.paulniu.ying.callback.IRealmQueryCallback;
+import com.paulniu.ying.callback.IRealmQueryAffairCallback;
 import com.paulniu.ying.model.AffairModel;
 import com.paulniu.ying.util.impl.SQLiteDataBaseImpl;
 
@@ -27,7 +27,7 @@ import java.util.List;
  * Desc: 事务列表Fragment
  * Version:
  */
-public class AffairListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, IRealmQueryCallback {
+public class AffairListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, IRealmQueryAffairCallback {
 
     private static final String TAG = AffairListFragment.class.getSimpleName();
 

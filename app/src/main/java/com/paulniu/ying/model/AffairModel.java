@@ -2,10 +2,8 @@ package com.paulniu.ying.model;
 
 import java.io.Serializable;
 
-import io.realm.RealmModel;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.RealmClass;
 
 /**
  * Coder: niupuyue (牛谱乐)
@@ -22,6 +20,7 @@ public class AffairModel extends RealmObject implements Serializable {
 
     public String affairNote;
 
+    @PrimaryKey
     public long affairTime = 0L;
 
     public int affairType = 0;
