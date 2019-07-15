@@ -4,8 +4,10 @@ import com.niupuyue.mylibrary.utils.TimeUtility;
 import com.paulniu.ying.callback.IBaseRealmCallback;
 import com.paulniu.ying.callback.IRealmQueryAffairCallback;
 import com.paulniu.ying.callback.IRealmQueryFestivalCallback;
+import com.paulniu.ying.callback.IRealmQueryTallyCallback;
 import com.paulniu.ying.model.AffairModel;
 import com.paulniu.ying.model.FestivalModel;
+import com.paulniu.ying.model.TallyModel;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -138,42 +140,6 @@ public class SQLiteDataBaseHelper {
     }
 
     /**
-     * 同步查询所有的事务
-     *
-     * @return
-     */
-    public void queryAllAffair(final IRealmQueryAffairCallback callback) {
-        try {
-            getRealm().executeTransactionAsync(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    RealmResults<AffairModel> results = getRealm().where(AffairModel.class).findAll();
-                    List<AffairModel> affairModels = getRealm().copyFromRealm(results);
-                    if (null != callback) {
-                        callback.getResult(true, affairModels);
-                    }
-                }
-            }, new Realm.Transaction.OnSuccess() {
-                @Override
-                public void onSuccess() {
-                    if (null != callback) {
-                        callback.onSuccess();
-                    }
-                }
-            }, new Realm.Transaction.OnError() {
-                @Override
-                public void onError(Throwable error) {
-                    if (null != callback) {
-                        callback.onError();
-                    }
-                }
-            });
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    /**
      * 异步加载所有的事务
      */
     public void queryAllAffairAsync(final IRealmQueryAffairCallback callback) {
@@ -215,7 +181,7 @@ public class SQLiteDataBaseHelper {
     /**
      * 异步加载某一天所有事务
      */
-    public void queryAffairByDay(final boolean isRefresh, final long time, final IRealmQueryAffairCallback callback) {
+    public void queryAffairByDayAsync(final boolean isRefresh, final long time, final IRealmQueryAffairCallback callback) {
         try {
             getRealm().executeTransactionAsync(new Realm.Transaction() {
                 @Override
@@ -268,7 +234,7 @@ public class SQLiteDataBaseHelper {
     /**
      * 异步加载某一个月的所有事务
      */
-    public void queryAffairByMonth(final boolean isRefresh, final long time, final IRealmQueryAffairCallback callback) {
+    public void queryAffairByMonthAsync(final boolean isRefresh, final long time, final IRealmQueryAffairCallback callback) {
         try {
             getRealm().executeTransactionAsync(new Realm.Transaction() {
                 @Override
@@ -321,7 +287,7 @@ public class SQLiteDataBaseHelper {
     /**
      * 异步加载某一个星期的所有事务
      */
-    public void queryAffairByWeek(final boolean isRefresh, final long time, final IRealmQueryAffairCallback callback) {
+    public void queryAffairByWeekAsync(final boolean isRefresh, final long time, final IRealmQueryAffairCallback callback) {
         try {
             getRealm().executeTransactionAsync(new Realm.Transaction() {
                 @Override
@@ -412,7 +378,7 @@ public class SQLiteDataBaseHelper {
     /**
      * 查询所有的节日
      */
-    public void queryAllFestival(final boolean isRefresh, final IRealmQueryFestivalCallback callback) {
+    public void queryAllFestivalAsync(final boolean isRefresh, final IRealmQueryFestivalCallback callback) {
         try {
             getRealm().executeTransactionAsync(new Realm.Transaction() {
                 @Override
@@ -453,7 +419,7 @@ public class SQLiteDataBaseHelper {
     /**
      * 判断当天是否是节日
      */
-    public void queryTadayFestival(final IRealmQueryFestivalCallback callback) {
+    public void queryTadayFestivalAsync(final IRealmQueryFestivalCallback callback) {
         try {
             getRealm().executeTransactionAsync(new Realm.Transaction() {
                 @Override
@@ -497,5 +463,99 @@ public class SQLiteDataBaseHelper {
             ex.printStackTrace();
         }
     }
-    
+
+    /**
+     * 获取全部账单
+     */
+    public void queryAllTallyAsync(final boolean isRefresh, final IRealmQueryTallyCallback callback) {
+        try {
+            getRealm().executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<TallyModel> tallyModels = getRealm().where(TallyModel.class).findAllAsync();
+                    tallyModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<TallyModel>>() {
+                        @Override
+                        public void onChange(RealmResults<TallyModel> tallyModels, OrderedCollectionChangeSet changeSet) {
+                            if (tallyModels.size() > 0) {
+                                List<TallyModel> results = getRealm().copyFromRealm(tallyModels);
+                                if (null != callback) {
+                                    callback.getResults(isRefresh, results);
+                                }
+                            }
+                        }
+                    });
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    if (null != callback) {
+                        callback.onSuccess();
+                    }
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    if (null != callback) {
+                        callback.onError();
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 获取月份的账单
+     */
+    public void queryTallyByMonthAsync(final boolean isRefresh, final long time, final IRealmQueryTallyCallback callback) {
+        try {
+            getRealm().executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    long targetTime;
+                    if (time < 0) {
+                        targetTime = System.currentTimeMillis();
+                    } else {
+                        targetTime = time;
+                    }
+                    RealmResults<TallyModel> tallyModels = getRealm().where(TallyModel.class).findAllAsync();
+                    tallyModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<TallyModel>>() {
+                        @Override
+                        public void onChange(RealmResults<TallyModel> tallyModels, OrderedCollectionChangeSet changeSet) {
+                            if (tallyModels.size() > 0) {
+                                List<TallyModel> temp = getRealm().copyFromRealm(tallyModels);
+                                List<TallyModel> results = new ArrayList<>();
+                                for (TallyModel model : temp) {
+                                    if (TimeUtility.isThisMonth(new Date(model.getTime()))) {
+                                        results.add(model);
+                                    }
+                                }
+                                if (null != callback) {
+                                    callback.getResults(isRefresh, results);
+                                }
+                            }
+                        }
+                    });
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    if (null != callback) {
+                        callback.onSuccess();
+                    }
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    if (null != callback) {
+                        callback.onError();
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }
