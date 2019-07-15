@@ -13,12 +13,8 @@ import io.realm.RealmObject;
  * Desc: 数据库操作回调
  * Version:
  */
-public interface ISqliteDataCallback {
+public interface IRealmQueryCallback extends IBaseRealmCallback {
 
-    void onSuccess();
-
-    void onError();
-
-    void getResult(boolean isRefresh,List<AffairModel> results);
+    void getResult(boolean isRefresh, List<AffairModel> results);
 
 }

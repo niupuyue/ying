@@ -7,6 +7,7 @@ import com.niupuyue.mylibrary.utils.LibraryConstants;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.paulniu.ying.constant.AppConfig;
+import com.paulniu.ying.database.YingMigration;
 
 import io.realm.DynamicRealm;
 import io.realm.Realm;
@@ -52,19 +53,14 @@ public class App extends Application {
         initRealmSQLite();
     }
 
-    private void initRealmSQLite(){
+    private void initRealmSQLite() {
         Realm.init(this);
         // 设置Realm配置信息
         RealmConfiguration config = new RealmConfiguration.Builder()
                 .name(AppConfig.REALM_SQLITE_NAME)
                 .rxFactory(new RealmObservableFactory())
                 .schemaVersion(AppConfig.REALM_SQLITE_VERSION)
-                .migration(new RealmMigration() {
-                    @Override
-                    public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
-
-                    }
-                })
+                .migration(new YingMigration())
                 .build();
         Realm.setDefaultConfiguration(config);
     }

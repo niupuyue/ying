@@ -2,11 +2,9 @@ package com.paulniu.ying.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,18 +19,14 @@ import com.niupuyue.mylibrary.utils.CustomToastUtility;
 import com.niupuyue.mylibrary.utils.ListenerUtility;
 import com.niupuyue.mylibrary.utils.TimeUtility;
 import com.niupuyue.mylibrary.widgets.datepicker.CustomDatePicker;
-import com.orhanobut.logger.Logger;
 import com.paulniu.ying.R;
 import com.paulniu.ying.base.BaseActivity;
-import com.paulniu.ying.callback.ISqliteDataCallback;
+import com.paulniu.ying.callback.IRealmQueryCallback;
 import com.paulniu.ying.model.AffairModel;
 import com.paulniu.ying.util.impl.SQLiteDataBaseImpl;
 import com.paulniu.ying.widget.popup.AddAffairTypePop;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Coder: niupuyue (牛谱乐)
@@ -41,7 +35,7 @@ import java.util.Locale;
  * Desc: 添加事务
  * Version:
  */
-public class AddAffairActivity extends BaseActivity implements View.OnClickListener, ISqliteDataCallback {
+public class AddAffairActivity extends BaseActivity implements View.OnClickListener, IRealmQueryCallback {
 
     public static Intent getIntent(Context context) {
         Intent intent = new Intent(context, AddAffairActivity.class);
