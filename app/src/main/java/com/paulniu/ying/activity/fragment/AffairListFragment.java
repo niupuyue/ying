@@ -16,6 +16,7 @@ import com.paulniu.ying.adapter.AffairListAdapter;
 import com.paulniu.ying.callback.IRealmQueryAffairCallback;
 import com.paulniu.ying.database.SQLiteDataBaseHelper;
 import com.paulniu.ying.model.AffairModel;
+import com.paulniu.ying.widget.IYingLoadMoreView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +85,7 @@ public class AffairListFragment extends BaseFragment implements SwipeRefreshLayo
                 load(false);
             }
         });
+        adapter.setLoadMoreView(new IYingLoadMoreView());
         recyclerView.setAdapter(adapter);
         swipeRefreshLayout.setRefreshing(true);
         load(true);

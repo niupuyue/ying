@@ -35,8 +35,8 @@ public class MovieAdapter extends BaseQuickAdapter<MovieModel.Subjects, BaseView
         }
     };
 
-    public MovieAdapter(int layoutResId, @Nullable List<MovieModel.Subjects> data, Context context) {
-        super(layoutResId, data);
+    public MovieAdapter(int layoutResId, Context context) {
+        super(layoutResId);
         this.mContext = context;
     }
 

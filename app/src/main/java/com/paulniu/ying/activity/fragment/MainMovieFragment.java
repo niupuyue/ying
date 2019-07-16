@@ -22,6 +22,7 @@ import com.paulniu.ying.adapter.MovieAdapter;
 import com.paulniu.ying.constant.AppConfig;
 import com.paulniu.ying.model.data.MovieModel;
 import com.paulniu.ying.util.infomanager.LocationInfoManager;
+import com.paulniu.ying.widget.IYingLoadMoreView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,11 +51,9 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private View footView;
 
     private int index = ApiService.START_INDEX;
     private MovieAdapter adapter;
-    private List<MovieModel.Subjects> subjects = new ArrayList<>();
 
     private View.OnClickListener footOnClicklistener = new View.OnClickListener() {
         @Override
@@ -87,7 +86,7 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void initData() {
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color._feb501), getResources().getColor(R.color.toolbar_bg));
-        adapter = new MovieAdapter(R.layout.item_movie, subjects, getContext());
+        adapter = new MovieAdapter(R.layout.item_movie, getContext());
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -103,10 +102,7 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
                 load(false);
             }
         });
-        footView = getLayoutInflater().inflate(R.layout.view_recycleview_foot, (ViewGroup) recyclerView.getParent(), false);
-        BaseUtility.resetVisibility(footView, View.GONE);
-        ListenerUtility.setOnClickListener(footOnClicklistener, footView);
-        adapter.addFooterView(footView);
+        adapter.setLoadMoreView(new IYingLoadMoreView());
         recyclerView.setAdapter(adapter);
         swipeRefreshLayout.setRefreshing(true);
         load(true);
@@ -130,15 +126,21 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
                         // 获取到数据，刷新页面
                         if (movieModel != null && !BaseUtility.isEmpty(movieModel.getSubjects())) {
                             if (isRefresh) {
-                                MainMovieFragment.this.subjects.clear();
+                                // 刷新
+                                if (adapter != null) {
+                                    adapter.setNewData(movieModel.getSubjects());
+                                }
+                            } else {
+                                // 加载更多
+                                if (adapter != null) {
+                                    adapter.addData(movieModel.getSubjects());
+                                }
                             }
-                            MainMovieFragment.this.subjects.addAll(movieModel.getSubjects());
-                            if (BaseUtility.size(movieModel.getSubjects()) < ApiService.LIMIT) {
-                                // 数据加载完毕
-                                BaseUtility.resetVisibility(footView, View.VISIBLE);
+                            if (movieModel.getSubjects().size() < ApiService.LIMIT) {
+                                // 数据加载完成，后面没数据了
                                 adapter.loadMoreEnd(isRefresh);
                             } else {
-                                // 数据未加载完毕
+                                // 数据加载完成，后面还可能有数据
                                 adapter.loadMoreComplete();
                             }
                         }
@@ -157,7 +159,6 @@ public class MainMovieFragment extends BaseFragment implements SwipeRefreshLayou
                     public void onComplete() {
                         if (adapter != null) {
                             swipeRefreshLayout.setRefreshing(false);
-                            adapter.loadMoreComplete();
                         }
                     }
                 });
