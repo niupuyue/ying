@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.niupuyue.mylibrary.utils.BaseUtility;
 import com.niupuyue.mylibrary.utils.CustomToastUtility;
 import com.niupuyue.mylibrary.utils.ListenerUtility;
@@ -109,7 +111,7 @@ public class AddAffairActivity extends BaseActivity implements View.OnClickListe
             if (BaseUtility.isEmpty(note)) {
                 return;
             }
-            SQLiteDataBaseHelper.getInstance().addAsyncWithKey(model,this);
+            SQLiteDataBaseHelper.getInstance().addAsyncWithKey(model, this);
         } catch (Exception ex) {
             ex.printStackTrace();
             CustomToastUtility.makeTextError(getString(R.string.app_add_affair_error));
@@ -176,24 +178,32 @@ public class AddAffairActivity extends BaseActivity implements View.OnClickListe
      * 显示选择类型弹窗
      */
     private void showSelectTypePop() {
-        AddAffairTypePop pop = new AddAffairTypePop(AddAffairActivity.this, new AddAffairTypePop.AddAffairTypeListener() {
+//        AddAffairTypePop pop = new AddAffairTypePop(AddAffairActivity.this, new AddAffairTypePop.AddAffairTypeListener() {
+//            @Override
+//            public void affairType(int type) {
+//                AddAffairActivity.this.type = type;
+//                switch (type) {
+//                    case AffairModel.AFFAIR_TYPE_MAX:
+//                        BaseUtility.setText(tvAddAffairActivityType, getString(R.string.pop_add_affair_type_high));
+//                        break;
+//                    case AffairModel.AFFAIR_TYPE_MIDDLE:
+//                        BaseUtility.setText(tvAddAffairActivityType, getString(R.string.pop_add_affair_type_middle));
+//                        break;
+//                    case AffairModel.AFFAIR_TYPE_LOW:
+//                        BaseUtility.setText(tvAddAffairActivityType, getString(R.string.pop_add_affair_type_low));
+//                        break;
+//                }
+//            }
+//        });
+//        pop.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+
+        new XPopup.Builder(this).asBottomList(getString(R.string.addaffair_activity_select_type_title), new String[]{getString(R.string.pop_add_affair_type_high), getString(R.string.pop_add_affair_type_middle), getString(R.string.pop_add_affair_type_low)}, new OnSelectListener() {
             @Override
-            public void affairType(int type) {
-                AddAffairActivity.this.type = type;
-                switch (type) {
-                    case AffairModel.AFFAIR_TYPE_MAX:
-                        BaseUtility.setText(tvAddAffairActivityType, getString(R.string.pop_add_affair_type_high));
-                        break;
-                    case AffairModel.AFFAIR_TYPE_MIDDLE:
-                        BaseUtility.setText(tvAddAffairActivityType, getString(R.string.pop_add_affair_type_middle));
-                        break;
-                    case AffairModel.AFFAIR_TYPE_LOW:
-                        BaseUtility.setText(tvAddAffairActivityType, getString(R.string.pop_add_affair_type_low));
-                        break;
-                }
+            public void onSelect(int position, String text) {
+                AddAffairActivity.this.type = position;
+                BaseUtility.setText(tvAddAffairActivityType, text);
             }
-        });
-        pop.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM, 0, 0);
+        }).show();
     }
 
     @Override

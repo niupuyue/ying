@@ -47,5 +47,6 @@
     <string name="pop_add_affair_type_low">待办</string>
     <string name="pop_add_affair_type_middle">普通</string>
     <string name="app_add_affair_error">新增事务数据失败，请稍后重试！</string>
+    <string name="addaffair_activity_select_type_title">选择事务类型</string>
 
 </resources>

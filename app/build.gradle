@@ -31,6 +31,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api "com.android.support:appcompat-v7:$rootProject.ext.dependencies.supportLibraryVersion"
     api "com.android.support:design:$rootProject.ext.dependencies.supportLibraryVersion"
+    api "com.android.support:recyclerview-v7:$rootProject.ext.dependencies.supportLibraryVersion"
 
     api "com.github.xiaoniudadi:IYingLibrary:$rootProject.ext.dependencies.IYingLibrary"
 
@@ -63,4 +64,6 @@ dependencies {
     api "me.zhanghai.android.materialratingbar:library:$rootProject.ext.dependencies.starbar"
     // autoLayout
     api "com.zhy:autolayout:$rootProject.ext.dependencies.autoLayout"
+    // XPopup
+    api "com.lxj:xpopup:$rootProject.ext.dependencies.xpopup"
 }
