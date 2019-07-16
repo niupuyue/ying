@@ -20,6 +20,7 @@ import io.realm.RealmAsyncTask;
 import io.realm.RealmChangeListener;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Coder: niupuyue
@@ -112,7 +113,7 @@ public class SQLiteDataBaseHelper {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(final Realm realm) {
-                    final RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).findAll();
+                    final RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).sort("affairTime", Sort.DESCENDING).findAll();
                     if (null != callback) {
                         List<AffairModel> results = realm.copyFromRealm(affairModels);
                         callback.getResult(true, results);
@@ -127,19 +128,18 @@ public class SQLiteDataBaseHelper {
     /**
      * 删除某一个事务
      */
-    public void deleteAffairByTime(final long time, final IBaseRealmCallback callback){
+    public void deleteAffairByTime(final long time) {
         try {
             realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).equalTo("affairTime",time).findAll();
-                    if (affairModels.size() > 0){
+                    RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).equalTo("affairTime", time).findAll();
+                    if (affairModels.size() > 0) {
                         affairModels.deleteAllFromRealm();
-                        callback.onSuccess();
                     }
                 }
             });
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

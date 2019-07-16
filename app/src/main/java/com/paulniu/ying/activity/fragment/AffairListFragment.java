@@ -5,14 +5,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.interfaces.OnSelectListener;
 import com.niupuyue.mylibrary.utils.BaseUtility;
 import com.niupuyue.mylibrary.utils.CustomToastUtility;
 import com.niupuyue.mylibrary.utils.ListenerUtility;
+import com.niupuyue.mylibrary.utils.ScreenUtility;
 import com.orhanobut.logger.Logger;
 import com.paulniu.ying.ApiService;
 import com.paulniu.ying.BaseFragment;
 import com.paulniu.ying.R;
 import com.paulniu.ying.adapter.AffairListAdapter;
+import com.paulniu.ying.callback.IBaseRealmCallback;
 import com.paulniu.ying.callback.IRealmQueryAffairCallback;
 import com.paulniu.ying.database.SQLiteDataBaseHelper;
 import com.paulniu.ying.model.AffairModel;
@@ -76,6 +80,42 @@ public class AffairListFragment extends BaseFragment implements SwipeRefreshLayo
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 // 显示事务详情
 
+            }
+        });
+        adapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(final BaseQuickAdapter adapter, View view, int position) {
+                // 长按显示弹窗
+                new XPopup.Builder(getContext())
+                        .atView(view)
+                        .asAttachList(new String[]{getString(R.string.app_delete), getString(R.string.main_activity_share), getString(R.string.app_delete_all)}, null, new OnSelectListener() {
+                            @Override
+                            public void onSelect(int position, String text) {
+                                if (position == 0) {
+                                    // 删除该对象
+                                    SQLiteDataBaseHelper.getInstance().deleteAffairByTime(((AffairModel) adapter.getItem(position)).getAffairTime());
+                                } else if (position == 1) {
+                                    // 分享操作 TODO
+
+                                } else if (position == 2) {
+                                    // 删除全部事务
+                                    SQLiteDataBaseHelper.getInstance().deleteAllAsync(AffairModel.class, new IBaseRealmCallback() {
+                                        @Override
+                                        public void onSuccess() {
+                                            // 清除成功
+                                            CustomToastUtility.makeTextSucess(getString(R.string.app_delete_affair_success));
+                                            adapter.notifyDataSetChanged();
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            CustomToastUtility.makeTextSucess(getString(R.string.app_delete_affair_error));
+                                        }
+                                    });
+                                }
+                            }
+                        }).show();
+                return false;
             }
         });
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {

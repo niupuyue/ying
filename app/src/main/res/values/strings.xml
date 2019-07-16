@@ -48,5 +48,10 @@
     <string name="pop_add_affair_type_middle">普通</string>
     <string name="app_add_affair_error">新增事务数据失败，请稍后重试！</string>
     <string name="addaffair_activity_select_type_title">选择事务类型</string>
+    <string name="app_delete">删除</string>
+    <string name="app_delete_all">删除全部</string>
+    <string name="app_affair_list_more">更多操作</string>
+    <string name="app_delete_affair_success">删除事务成功！</string>
+    <string name="app_delete_affair_error">删除事务失败！</string>
 
 </resources>
