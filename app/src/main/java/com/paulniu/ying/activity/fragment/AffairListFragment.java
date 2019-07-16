@@ -14,8 +14,8 @@ import com.paulniu.ying.BaseFragment;
 import com.paulniu.ying.R;
 import com.paulniu.ying.adapter.AffairListAdapter;
 import com.paulniu.ying.callback.IRealmQueryAffairCallback;
+import com.paulniu.ying.database.SQLiteDataBaseHelper;
 import com.paulniu.ying.model.AffairModel;
-import com.paulniu.ying.util.impl.SQLiteDataBaseImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +41,7 @@ public class AffairListFragment extends BaseFragment implements SwipeRefreshLayo
     private RecyclerView recyclerView;
 
     private int index = 0;
+    public boolean isNeedLoayLoad = true;
     private AffairListAdapter adapter;
     private List<AffairModel> affairModels = new ArrayList<>();
 
@@ -94,7 +95,7 @@ public class AffairListFragment extends BaseFragment implements SwipeRefreshLayo
         } else {
             index += ApiService.LIMIT;
         }
-        SQLiteDataBaseImpl.getInstance().queryAll(isRefresh, AffairModel.class, this);
+        SQLiteDataBaseHelper.getInstance().queryAllAffairAsync(this);
     }
 
     @Override

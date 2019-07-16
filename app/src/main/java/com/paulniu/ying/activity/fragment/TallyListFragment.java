@@ -13,11 +13,13 @@ import com.paulniu.ying.R;
  * Version:
  */
 public class TallyListFragment extends BaseFragment {
-    public static TallyListFragment getInstance(){
+    public static TallyListFragment getInstance() {
         TallyListFragment fragment = new TallyListFragment();
 
         return fragment;
     }
+
+    public boolean isNeedLoayLoad = true;
 
     @Override
     public int getLayoutId() {

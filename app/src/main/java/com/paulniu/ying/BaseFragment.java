@@ -19,9 +19,6 @@ public abstract class BaseFragment extends Fragment {
 
     public View mRoot;
 
-    boolean isViewCreated;
-    boolean isUIVisiable;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,33 +37,16 @@ public abstract class BaseFragment extends Fragment {
 
     public abstract void initData();
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            isUIVisiable = true;
-            lazyLoad();
-        } else {
-            isUIVisiable = false;
-        }
-    }
-
     private void lazyLoad() {
-//        if (isViewCreated && isUIVisiable) {
-//            isViewCreated = false;
-//            isUIVisiable = false;
-            initDateExtra();
-            initViewFindViewById(mRoot);
-            initListener();
-            initData();
-//        }
+        initDateExtra();
+        initViewFindViewById(mRoot);
+        initListener();
+        initData();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        isViewCreated = false;
-        isUIVisiable = false;
     }
 
 }

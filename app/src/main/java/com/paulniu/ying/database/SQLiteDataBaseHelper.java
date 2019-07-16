@@ -37,23 +37,16 @@ public class SQLiteDataBaseHelper {
         return SQLiteDataBaseHelperImpl.INSTANCE;
     }
 
-    private Realm mRealm = null;
-
-    public synchronized Realm getRealm() {
-        if (null == mRealm) {
-            mRealm = Realm.getDefaultInstance();
-        }
-        return mRealm;
-    }
+    private Realm realm = Realm.getDefaultInstance();
 
     // 异步插入数据 没有primarykey
     public RealmAsyncTask addAsync(final RealmObject obj, final IBaseRealmCallback callback) {
         RealmAsyncTask task = null;
         try {
-            task = getRealm().executeTransactionAsync(new Realm.Transaction() {
+            task = realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    getRealm().copyToRealm(obj);
+                    realm.copyToRealm(obj);
                 }
             }, new Realm.Transaction.OnSuccess() {
                 @Override
@@ -78,12 +71,13 @@ public class SQLiteDataBaseHelper {
 
     // 异步插入数据，有primarykey
     public RealmAsyncTask addAsyncWithKey(final RealmObject obj, final IBaseRealmCallback callback) {
+        Realm realm = Realm.getDefaultInstance();
         RealmAsyncTask task = null;
         try {
-            task = getRealm().executeTransactionAsync(new Realm.Transaction() {
+            task = realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    getRealm().insertOrUpdate(obj);
+                    realm.insertOrUpdate(obj);
                 }
             }, new Realm.Transaction.OnSuccess() {
                 @Override
@@ -110,10 +104,10 @@ public class SQLiteDataBaseHelper {
     public RealmAsyncTask deleteAllAsync(final Class clz, final IBaseRealmCallback callback) {
         RealmAsyncTask task = null;
         try {
-            task = getRealm().executeTransactionAsync(new Realm.Transaction() {
+            task = realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    RealmResults results = getRealm().where(clz).findAll();
+                    RealmResults results = realm.where(clz).findAll();
                     if (results.size() > 0) {
                         results.deleteAllFromRealm();
                     }
@@ -144,19 +138,14 @@ public class SQLiteDataBaseHelper {
      */
     public void queryAllAffairAsync(final IRealmQueryAffairCallback callback) {
         try {
-            getRealm().executeTransactionAsync(new Realm.Transaction() {
+            realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
-                    final RealmResults<AffairModel> results = getRealm().where(AffairModel.class).findAllAsync();
-                    results.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<AffairModel>>() {
-                        @Override
-                        public void onChange(RealmResults<AffairModel> affairModels, OrderedCollectionChangeSet changeSet) {
-                            if (callback != null) {
-                                List<AffairModel> result = getRealm().copyFromRealm(affairModels);
-                                callback.getResult(true, results);
-                            }
-                        }
-                    });
+                public void execute(final Realm realm) {
+                    final RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).findAll();
+                    if (null != callback) {
+                        List<AffairModel> results = realm.copyFromRealm(affairModels);
+                        callback.getResult(true, results);
+                    }
                 }
             }, new Realm.Transaction.OnSuccess() {
                 @Override
@@ -183,33 +172,28 @@ public class SQLiteDataBaseHelper {
      */
     public void queryAffairByDayAsync(final boolean isRefresh, final long time, final IRealmQueryAffairCallback callback) {
         try {
-            getRealm().executeTransactionAsync(new Realm.Transaction() {
+            realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(final Realm realm) {
                     long targetTime;
                     if (time < 0) {
                         targetTime = System.currentTimeMillis();
                     } else {
                         targetTime = time;
                     }
-                    RealmResults<AffairModel> affairModels = getRealm().where(AffairModel.class).findAllAsync();
-                    affairModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<AffairModel>>() {
-                        @Override
-                        public void onChange(RealmResults<AffairModel> affairModels, OrderedCollectionChangeSet changeSet) {
-                            if (affairModels.size() > 0) {
-                                List<AffairModel> temp = getRealm().copyFromRealm(affairModels);
-                                List<AffairModel> result = new ArrayList<>();
-                                for (AffairModel model : temp) {
-                                    if (TimeUtility.isToday(new Date(model.getAffairTime()))) {
-                                        result.add(model);
-                                    }
-                                }
-                                if (null != callback) {
-                                    callback.getResult(isRefresh, result);
-                                }
+                    RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).findAll();
+                    if (affairModels.size() > 0) {
+                        List<AffairModel> temp = realm.copyFromRealm(affairModels);
+                        List<AffairModel> result = new ArrayList<>();
+                        for (AffairModel model : temp) {
+                            if (TimeUtility.isToday(new Date(model.getAffairTime()))) {
+                                result.add(model);
                             }
                         }
-                    });
+                        if (null != callback) {
+                            callback.getResult(isRefresh, result);
+                        }
+                    }
                 }
             }, new Realm.Transaction.OnSuccess() {
                 @Override
@@ -236,33 +220,28 @@ public class SQLiteDataBaseHelper {
      */
     public void queryAffairByMonthAsync(final boolean isRefresh, final long time, final IRealmQueryAffairCallback callback) {
         try {
-            getRealm().executeTransactionAsync(new Realm.Transaction() {
+            realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(final Realm realm) {
                     long targetTime;
                     if (time < 0) {
                         targetTime = System.currentTimeMillis();
                     } else {
                         targetTime = time;
                     }
-                    RealmResults<AffairModel> affairModels = getRealm().where(AffairModel.class).findAllAsync();
-                    affairModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<AffairModel>>() {
-                        @Override
-                        public void onChange(RealmResults<AffairModel> affairModels, OrderedCollectionChangeSet changeSet) {
-                            if (affairModels.size() > 0) {
-                                List<AffairModel> temp = getRealm().copyFromRealm(affairModels);
-                                List<AffairModel> results = new ArrayList<>();
-                                for (AffairModel model : temp) {
-                                    if (TimeUtility.isThisMonth(new Date(model.getAffairTime()))) {
-                                        results.add(model);
-                                    }
-                                }
-                                if (null != callback) {
-                                    callback.getResult(isRefresh, results);
-                                }
+                    RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).findAll();
+                    if (affairModels.size() > 0) {
+                        List<AffairModel> temp = realm.copyFromRealm(affairModels);
+                        List<AffairModel> results = new ArrayList<>();
+                        for (AffairModel model : temp) {
+                            if (TimeUtility.isThisMonth(new Date(model.getAffairTime()))) {
+                                results.add(model);
                             }
                         }
-                    });
+                        if (null != callback) {
+                            callback.getResult(isRefresh, results);
+                        }
+                    }
                 }
             }, new Realm.Transaction.OnSuccess() {
                 @Override
@@ -289,33 +268,28 @@ public class SQLiteDataBaseHelper {
      */
     public void queryAffairByWeekAsync(final boolean isRefresh, final long time, final IRealmQueryAffairCallback callback) {
         try {
-            getRealm().executeTransactionAsync(new Realm.Transaction() {
+            realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(final Realm realm) {
                     long targetTime;
                     if (time < 0) {
                         targetTime = System.currentTimeMillis();
                     } else {
                         targetTime = time;
                     }
-                    RealmResults<AffairModel> affairModels = getRealm().where(AffairModel.class).findAllAsync();
-                    affairModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<AffairModel>>() {
-                        @Override
-                        public void onChange(RealmResults<AffairModel> affairModels, OrderedCollectionChangeSet changeSet) {
-                            if (affairModels.size() > 0) {
-                                List<AffairModel> temp = getRealm().copyFromRealm(affairModels);
-                                List<AffairModel> results = new ArrayList<>();
-                                for (AffairModel model : temp) {
-                                    if (TimeUtility.isThisWeek(new Date(model.getAffairTime()))) {
-                                        results.add(model);
-                                    }
-                                }
-                                if (null != callback) {
-                                    callback.getResult(isRefresh, results);
-                                }
+                    RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).findAll();
+                    if (affairModels.size() > 0) {
+                        List<AffairModel> temp = realm.copyFromRealm(affairModels);
+                        List<AffairModel> results = new ArrayList<>();
+                        for (AffairModel model : temp) {
+                            if (TimeUtility.isThisWeek(new Date(model.getAffairTime()))) {
+                                results.add(model);
                             }
                         }
-                    });
+                        if (null != callback) {
+                            callback.getResult(isRefresh, results);
+                        }
+                    }
                 }
             }, new Realm.Transaction.OnSuccess() {
                 @Override
@@ -342,21 +316,16 @@ public class SQLiteDataBaseHelper {
      */
     public void deleteAffairByTime(final long time, final IBaseRealmCallback callback) {
         try {
-            getRealm().executeTransactionAsync(new Realm.Transaction() {
+            realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
-                    RealmResults<AffairModel> results = getRealm().where(AffairModel.class).equalTo("affairTime", time).findAllAsync();
-                    results.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<AffairModel>>() {
-                        @Override
-                        public void onChange(RealmResults<AffairModel> affairModels, OrderedCollectionChangeSet changeSet) {
-                            if (affairModels.size() > 0) {
-                                affairModels.deleteAllFromRealm();
-                            }
-                            if (null != callback) {
-                                callback.onSuccess();
-                            }
-                        }
-                    });
+                    RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).equalTo("affairTime", time).findAll();
+                    if (affairModels.size() > 0) {
+                        affairModels.deleteAllFromRealm();
+                    }
+                    if (null != callback) {
+                        callback.onSuccess();
+                    }
                 }
             }, new Realm.Transaction.OnSuccess() {
                 @Override
@@ -380,21 +349,16 @@ public class SQLiteDataBaseHelper {
      */
     public void queryAllFestivalAsync(final boolean isRefresh, final IRealmQueryFestivalCallback callback) {
         try {
-            getRealm().executeTransactionAsync(new Realm.Transaction() {
+            realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
-                    RealmResults<FestivalModel> festivalModels = getRealm().where(FestivalModel.class).findAllAsync();
-                    festivalModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<FestivalModel>>() {
-                        @Override
-                        public void onChange(RealmResults<FestivalModel> festivalModels, OrderedCollectionChangeSet changeSet) {
-                            if (festivalModels.size() > 0) {
-                                List<FestivalModel> results = getRealm().copyFromRealm(festivalModels);
-                                if (null != callback) {
-                                    callback.getResult(isRefresh, results);
-                                }
-                            }
+                public void execute(final Realm realm) {
+                    RealmResults<FestivalModel> festivalModels = realm.where(FestivalModel.class).findAll();
+                    if (festivalModels.size() > 0) {
+                        List<FestivalModel> results = realm.copyFromRealm(festivalModels);
+                        if (null != callback) {
+                            callback.getResult(isRefresh, results);
                         }
-                    });
+                    }
                 }
             }, new Realm.Transaction.OnSuccess() {
                 @Override
@@ -421,28 +385,23 @@ public class SQLiteDataBaseHelper {
      */
     public void queryTadayFestivalAsync(final IRealmQueryFestivalCallback callback) {
         try {
-            getRealm().executeTransactionAsync(new Realm.Transaction() {
+            realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
-                    RealmResults<FestivalModel> festivalModels = getRealm().where(FestivalModel.class).findAllAsync();
-                    festivalModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<FestivalModel>>() {
-                        @Override
-                        public void onChange(RealmResults<FestivalModel> festivalModels, OrderedCollectionChangeSet changeSet) {
-                            if (festivalModels.size() > 0) {
-                                List<FestivalModel> temp = getRealm().copyFromRealm(festivalModels);
-                                FestivalModel model = null;
-                                for (FestivalModel festivalModel : temp) {
-                                    if (TimeUtility.isToday(new Date(festivalModel.getFestivalDate()))) {
-                                        model = festivalModel;
-                                        break;
-                                    }
-                                }
-                                if (null != callback) {
-                                    callback.getFestival(model);
-                                }
+                public void execute(final Realm realm) {
+                    RealmResults<FestivalModel> festivalModels = realm.where(FestivalModel.class).findAll();
+                    if (festivalModels.size() > 0) {
+                        List<FestivalModel> temp = realm.copyFromRealm(festivalModels);
+                        FestivalModel model = null;
+                        for (FestivalModel festivalModel : temp) {
+                            if (TimeUtility.isToday(new Date(festivalModel.getFestivalDate()))) {
+                                model = festivalModel;
+                                break;
                             }
                         }
-                    });
+                        if (null != callback) {
+                            callback.getFestival(model);
+                        }
+                    }
                 }
             }, new Realm.Transaction.OnSuccess() {
                 @Override
@@ -469,21 +428,16 @@ public class SQLiteDataBaseHelper {
      */
     public void queryAllTallyAsync(final boolean isRefresh, final IRealmQueryTallyCallback callback) {
         try {
-            getRealm().executeTransactionAsync(new Realm.Transaction() {
+            realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
-                    RealmResults<TallyModel> tallyModels = getRealm().where(TallyModel.class).findAllAsync();
-                    tallyModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<TallyModel>>() {
-                        @Override
-                        public void onChange(RealmResults<TallyModel> tallyModels, OrderedCollectionChangeSet changeSet) {
-                            if (tallyModels.size() > 0) {
-                                List<TallyModel> results = getRealm().copyFromRealm(tallyModels);
-                                if (null != callback) {
-                                    callback.getResults(isRefresh, results);
-                                }
-                            }
+                public void execute(final Realm realm) {
+                    RealmResults<TallyModel> tallyModels = realm.where(TallyModel.class).findAll();
+                    if (tallyModels.size() > 0) {
+                        List<TallyModel> results = realm.copyFromRealm(tallyModels);
+                        if (null != callback) {
+                            callback.getResults(isRefresh, results);
                         }
-                    });
+                    }
                 }
             }, new Realm.Transaction.OnSuccess() {
                 @Override
@@ -510,33 +464,28 @@ public class SQLiteDataBaseHelper {
      */
     public void queryTallyByMonthAsync(final boolean isRefresh, final long time, final IRealmQueryTallyCallback callback) {
         try {
-            getRealm().executeTransactionAsync(new Realm.Transaction() {
+            realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(final Realm realm) {
                     long targetTime;
                     if (time < 0) {
                         targetTime = System.currentTimeMillis();
                     } else {
                         targetTime = time;
                     }
-                    RealmResults<TallyModel> tallyModels = getRealm().where(TallyModel.class).findAllAsync();
-                    tallyModels.addChangeListener(new OrderedRealmCollectionChangeListener<RealmResults<TallyModel>>() {
-                        @Override
-                        public void onChange(RealmResults<TallyModel> tallyModels, OrderedCollectionChangeSet changeSet) {
-                            if (tallyModels.size() > 0) {
-                                List<TallyModel> temp = getRealm().copyFromRealm(tallyModels);
-                                List<TallyModel> results = new ArrayList<>();
-                                for (TallyModel model : temp) {
-                                    if (TimeUtility.isThisMonth(new Date(model.getTime()))) {
-                                        results.add(model);
-                                    }
-                                }
-                                if (null != callback) {
-                                    callback.getResults(isRefresh, results);
-                                }
+                    RealmResults<TallyModel> tallyModels = realm.where(TallyModel.class).findAll();
+                    if (tallyModels.size() > 0) {
+                        List<TallyModel> temp = realm.copyFromRealm(tallyModels);
+                        List<TallyModel> results = new ArrayList<>();
+                        for (TallyModel model : temp) {
+                            if (TimeUtility.isThisMonth(new Date(model.getTime()))) {
+                                results.add(model);
                             }
                         }
-                    });
+                        if (null != callback) {
+                            callback.getResults(isRefresh, results);
+                        }
+                    }
                 }
             }, new Realm.Transaction.OnSuccess() {
                 @Override

@@ -22,8 +22,8 @@ import com.niupuyue.mylibrary.widgets.datepicker.CustomDatePicker;
 import com.paulniu.ying.R;
 import com.paulniu.ying.base.BaseActivity;
 import com.paulniu.ying.callback.IRealmQueryAffairCallback;
+import com.paulniu.ying.database.SQLiteDataBaseHelper;
 import com.paulniu.ying.model.AffairModel;
-import com.paulniu.ying.util.impl.SQLiteDataBaseImpl;
 import com.paulniu.ying.widget.popup.AddAffairTypePop;
 
 import java.util.List;
@@ -109,7 +109,7 @@ public class AddAffairActivity extends BaseActivity implements View.OnClickListe
             if (BaseUtility.isEmpty(note)) {
                 return;
             }
-            SQLiteDataBaseImpl.getInstance().add(model, this);
+            SQLiteDataBaseHelper.getInstance().addAsyncWithKey(model,this);
         } catch (Exception ex) {
             ex.printStackTrace();
             CustomToastUtility.makeTextError(getString(R.string.app_add_affair_error));
