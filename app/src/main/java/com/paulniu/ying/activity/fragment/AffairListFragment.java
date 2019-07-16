@@ -1,6 +1,7 @@
 package com.paulniu.ying.activity.fragment;
 
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -126,6 +127,7 @@ public class AffairListFragment extends BaseFragment implements SwipeRefreshLayo
         });
         adapter.setLoadMoreView(new IYingLoadMoreView());
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         swipeRefreshLayout.setRefreshing(true);
         load(true);
     }
