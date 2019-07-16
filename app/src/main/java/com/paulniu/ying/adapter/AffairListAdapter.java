@@ -25,8 +25,8 @@ import java.util.List;
 public class AffairListAdapter extends BaseQuickAdapter<AffairModel, BaseViewHolder> {
     private Context mContext;
 
-    public AffairListAdapter(int layoutResId, @Nullable List<AffairModel> data, Context context) {
-        super(layoutResId, data);
+    public AffairListAdapter(int layoutResId, Context context) {
+        super(layoutResId);
         this.mContext = context;
     }
 

@@ -44,7 +44,6 @@ public class AffairListFragment extends BaseFragment implements SwipeRefreshLayo
     private int index = 0;
     public boolean isNeedLoayLoad = true;
     private AffairListAdapter adapter;
-    private List<AffairModel> affairModels = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -70,13 +69,13 @@ public class AffairListFragment extends BaseFragment implements SwipeRefreshLayo
     @Override
     public void initData() {
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary), getResources().getColor(R.color._feb501), getResources().getColor(R.color.toolbar_bg));
-        adapter = new AffairListAdapter(R.layout.item_affair, affairModels, getContext());
+        adapter = new AffairListAdapter(R.layout.item_affair, getContext());
         adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_BOTTOM);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 // 显示事务详情
-                Logger.e(TAG, adapter.getItem(position).toString());
+
             }
         });
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
@@ -111,32 +110,23 @@ public class AffairListFragment extends BaseFragment implements SwipeRefreshLayo
 
     @Override
     public void onError() {
-        // 加载数据失败
-        CustomToastUtility.makeTextError(getString(R.string.app_load_data_error));
-        if (adapter != null) {
-            adapter.loadMoreFail();
-        }
     }
 
     @Override
     public void getResult(boolean isRefresh, List<AffairModel> results) {
-        Logger.e(TAG, results.toString());
         // 记载数据成功
         if (!BaseUtility.isEmpty(results)) {
             if (isRefresh) {
-                affairModels.clear();
-            }
-            affairModels.addAll(results);
-            if (BaseUtility.size(results) < ApiService.LIMIT) {
-                // 数据加载完毕
-                adapter.loadMoreEnd(isRefresh);
+                if (adapter != null) {
+                    adapter.setNewData(results);
+                }
             } else {
-                // 数据未加载完毕
-                adapter.loadMoreComplete();
+                if (adapter != null) {
+                    adapter.addData(results);
+                }
             }
-            if (swipeRefreshLayout.isRefreshing()) {
-                swipeRefreshLayout.setRefreshing(false);
-            }
+            adapter.loadMoreComplete();
         }
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
