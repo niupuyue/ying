@@ -3,21 +3,15 @@ package com.paulniu.ying.database;
 import com.niupuyue.mylibrary.utils.TimeUtility;
 import com.paulniu.ying.callback.IBaseRealmCallback;
 import com.paulniu.ying.callback.IRealmQueryAffairCallback;
-import com.paulniu.ying.callback.IRealmQueryFestivalCallback;
-import com.paulniu.ying.callback.IRealmQueryTallyCallback;
 import com.paulniu.ying.model.AffairModel;
-import com.paulniu.ying.model.FestivalModel;
-import com.paulniu.ying.model.TallyModel;
 
+import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
-import io.realm.OrderedCollectionChangeSet;
-import io.realm.OrderedRealmCollectionChangeListener;
 import io.realm.Realm;
 import io.realm.RealmAsyncTask;
-import io.realm.RealmChangeListener;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 import io.realm.Sort;
@@ -122,6 +116,48 @@ public class SQLiteDataBaseHelper {
             });
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    /**
+     * 获取某一天的所有事务
+     */
+    public void queryTodayAffairAsync(final long time, final IRealmQueryAffairCallback callback) {
+        if (realm != null) {
+            long targetTime = 0;
+            if (time <= 0) {
+                targetTime = System.currentTimeMillis();
+            } else {
+                targetTime = time;
+            }
+            // 计算时间间距
+            // 获取这一天的开始
+            final long starTime = TimeUtility.getDayStartTime(TimeUtility.getCalendar(targetTime)).getTimeInMillis();
+            final long endTime = TimeUtility.getDayEndTime(TimeUtility.getCalendar(targetTime)).getTimeInMillis();
+            realm.executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).between("affairTime", starTime, endTime).findAll();
+                    List<AffairModel> results = realm.copyFromRealm(affairModels);
+                    if (callback != null) {
+                        callback.getResult(true, results);
+                    }
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    if (null != callback) {
+                        callback.onSuccess();
+                    }
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    if (null != callback) {
+                        callback.onError();
+                    }
+                }
+            });
         }
     }
 
