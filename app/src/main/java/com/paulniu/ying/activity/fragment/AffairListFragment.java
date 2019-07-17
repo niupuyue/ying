@@ -1,5 +1,6 @@
 package com.paulniu.ying.activity.fragment;
 
+import android.support.annotation.UiThread;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
@@ -122,12 +123,11 @@ public class AffairListFragment extends BaseFragment implements SwipeRefreshLayo
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                load(false);
+//                load(false);
             }
         });
         adapter.setLoadMoreView(new IYingLoadMoreView());
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
         swipeRefreshLayout.setRefreshing(true);
         load(true);
     }
@@ -155,20 +155,31 @@ public class AffairListFragment extends BaseFragment implements SwipeRefreshLayo
     }
 
     @Override
-    public void getResult(boolean isRefresh, List<AffairModel> results) {
+    public void getResult(final boolean isRefresh, final List<AffairModel> results) {
         // 记载数据成功
-        if (!BaseUtility.isEmpty(results)) {
-            if (isRefresh) {
-                if (adapter != null) {
-                    adapter.setNewData(results);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (!BaseUtility.isEmpty(results)) {
+                    if (isRefresh) {
+                        if (adapter != null) {
+                            adapter.setNewData(results);
+                        }
+                    } else {
+                        if (adapter != null) {
+                            adapter.addData(results);
+                        }
+                    }
+                    if (results.size() < ApiService.LIMIT) {
+                        // 数据加载完成，后面没数据了
+                        adapter.loadMoreEnd(isRefresh);
+                    } else {
+                        // 数据加载完成，后面还可能有数据
+                        adapter.loadMoreComplete();
+                    }
                 }
-            } else {
-                if (adapter != null) {
-                    adapter.addData(results);
-                }
+                swipeRefreshLayout.setRefreshing(false);
             }
-            adapter.loadMoreComplete();
-        }
-        swipeRefreshLayout.setRefreshing(false);
+        });
     }
 }

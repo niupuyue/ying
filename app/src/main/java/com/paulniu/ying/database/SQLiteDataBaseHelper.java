@@ -110,7 +110,7 @@ public class SQLiteDataBaseHelper {
      */
     public void queryAllAffairAsync(final IRealmQueryAffairCallback callback) {
         try {
-            realm.executeTransaction(new Realm.Transaction() {
+            realm.executeTransactionAsync(new Realm.Transaction() {
                 @Override
                 public void execute(final Realm realm) {
                     final RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).sort("affairTime", Sort.DESCENDING).findAll();
