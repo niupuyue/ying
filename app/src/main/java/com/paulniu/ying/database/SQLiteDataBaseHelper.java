@@ -162,6 +162,130 @@ public class SQLiteDataBaseHelper {
     }
 
     /**
+     * 获取某一周所有的事务
+     */
+    public void queryWeekAffairAsync(final long time, final IRealmQueryAffairCallback callback) {
+        if (realm != null) {
+            long target = 0;
+            if (time <= 0) {
+                target = System.currentTimeMillis();
+            } else {
+                target = time;
+            }
+            // 计算一周的时间间距
+            final long starTime = TimeUtility.getDayStarByWeek(TimeUtility.getCalendar(target)).getTimeInMillis();
+            final long endTime = TimeUtility.getDayEndByWeek(TimeUtility.getCalendar(target)).getTimeInMillis();
+            realm.executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).between("affairTime", starTime, endTime).findAll();
+                    List<AffairModel> results = realm.copyFromRealm(affairModels);
+                    if (null != callback) {
+                        callback.getResult(true, results);
+                    }
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    if (null != callback) {
+                        callback.onSuccess();
+                    }
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    if (null != callback) {
+                        callback.onError();
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * 获取某个月的事务
+     */
+    public void queryMonthAffairAsync(final long time, final IRealmQueryAffairCallback callback) {
+        if (realm != null) {
+            long target = 0;
+            if (time <= 0) {
+                target = System.currentTimeMillis();
+            } else {
+                target = time;
+            }
+            // 计算一个月的开始和结束
+            final long startTime = TimeUtility.getDayStarByMonth(TimeUtility.getCalendar(target)).getTimeInMillis();
+            final long endTime = TimeUtility.getDayEndByMonth(TimeUtility.getCalendar(target)).getTimeInMillis();
+            realm.executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).between("affairTime", startTime, endTime).findAll();
+                    List<AffairModel> results = realm.copyFromRealm(affairModels);
+                    if (null != callback) {
+                        callback.getResult(true, results);
+                    }
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    if (null != callback) {
+                        callback.onSuccess();
+                    }
+                }
+            }, new Realm.Transaction.OnError() {
+                @Override
+                public void onError(Throwable error) {
+                    if (null != callback) {
+                        callback.onError();
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * 获取某一年的事务
+     */
+    public void queryYearAffairAsync(final long time,final IRealmQueryAffairCallback callback){
+        if (realm == null){
+            realm = Realm.getDefaultInstance();
+        }
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                long target;
+                if (time <=0){
+                    target = System.currentTimeMillis();
+                }else {
+                    target = time;
+                }
+                // 获取一年的开始和结束
+                long startTime = TimeUtility.getDayStarByYear(TimeUtility.getCalendar(target)).getTimeInMillis();
+                long endTime = TimeUtility.getDayEndByYear(TimeUtility.getCalendar(target)).getTimeInMillis();
+                RealmResults<AffairModel> affairModels = realm.where(AffairModel.class).between("affairTime",startTime,endTime).findAll();
+                List<AffairModel> results = realm.copyFromRealm(affairModels);
+                if (null != callback){
+                    callback.getResult(true,results);
+                }
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                if (null != callback){
+                    callback.onSuccess();
+                }
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                if (null != callback){
+                    callback.onError();
+                }
+            }
+        });
+    }
+
+    /**
      * 删除某一个事务
      */
     public void deleteAffairByTime(final long time) {
