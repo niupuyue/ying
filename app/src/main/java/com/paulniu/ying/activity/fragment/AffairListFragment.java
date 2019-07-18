@@ -95,7 +95,17 @@ public class AffairListFragment extends BaseFragment implements SwipeRefreshLayo
                             public void onSelect(int position, String text) {
                                 if (position == 0) {
                                     // 删除该对象
-                                    SQLiteDataBaseHelper.getInstance().deleteAffairByTime(((AffairModel) adapter.getItem(position)).getAffairTime());
+                                    SQLiteDataBaseHelper.getInstance().deleteAffairByTime(((AffairModel) adapter.getItem(position)).getAffairTime(), new IBaseRealmCallback() {
+                                        @Override
+                                        public void onSuccess() {
+                                            CustomToastUtility.makeTextSucess(getString(R.string.app_delete_affair_success));
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            CustomToastUtility.makeTextSucess(getString(R.string.app_delete_affair_error));
+                                        }
+                                    });
                                 } else if (position == 1) {
                                     // 分享操作 TODO
 
