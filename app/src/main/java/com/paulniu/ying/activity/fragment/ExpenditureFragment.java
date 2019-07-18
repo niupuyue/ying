@@ -1,9 +1,12 @@
 package com.paulniu.ying.activity.fragment;
 
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.paulniu.ying.BaseFragment;
 import com.paulniu.ying.R;
+import com.paulniu.ying.adapter.AddTallyAdapter;
 
 /**
  * Coder: niupuyue
@@ -20,6 +23,10 @@ public class ExpenditureFragment extends BaseFragment {
         return fragment;
     }
 
+    private RecyclerView recyclerView;
+
+    private AddTallyAdapter adapter;
+
     @Override
     public int getLayoutId() {
         return R.layout.fragment_add_expenditure;
@@ -32,7 +39,7 @@ public class ExpenditureFragment extends BaseFragment {
 
     @Override
     public void initViewFindViewById(View view) {
-
+        recyclerView = view.findViewById(R.id.recyclerView);
     }
 
     @Override
@@ -42,6 +49,14 @@ public class ExpenditureFragment extends BaseFragment {
 
     @Override
     public void initData() {
+        adapter = new AddTallyAdapter(R.layout.item_add_tally,getContext());
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+        });
+        recyclerView.setAdapter(adapter);
 
     }
 }

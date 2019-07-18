@@ -12,7 +12,7 @@ public class AppConfig {
     // Realm数据库名称
     public static final String REALM_SQLITE_NAME = "iying.realm";
     // 当前数据库版本
-    public static final long REALM_SQLITE_VERSION = 0x001L;
+    public static final long REALM_SQLITE_VERSION = 0x002L;
 
     // 高德地图
     public static final String AMAP_KEY = "844a9f959433fc5a5dddca5985a4d0dd";

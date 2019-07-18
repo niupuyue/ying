@@ -38,6 +38,11 @@ public class YingMigration implements RealmMigration {
 //                    .addRealmListField("dogs", schema.get("Dog"));
 //            oldVersion++;
 //        }
+        if (oldVersion == 1) {
+            schema.get("TallyModel")
+                    .addField("avator", int.class)
+                    .addField("usage", String.class);
+        }
     }
 
     /**

@@ -20,7 +20,11 @@ public class TallyModel extends RealmObject {
 
     private double amount;
 
-    private int type;// 类型
+    private int type;// 类型  两种，收入和支出
+
+    private String usage;// 用途
+
+    private int avator;// 图标
 
     public long getTime() {
         return time;
@@ -53,4 +57,6 @@ public class TallyModel extends RealmObject {
     public void setType(int type) {
         this.type = type;
     }
+
+
 }
