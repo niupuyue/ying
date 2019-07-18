@@ -66,4 +66,8 @@ dependencies {
     api "com.zhy:autolayout:$rootProject.ext.dependencies.autoLayout"
     // XPopup
     api "com.lxj:xpopup:$rootProject.ext.dependencies.xpopup"
+    // segmented
+    api "info.hoang8f:android-segmented:$rootProject.ext.dependencies.segmented"
+    // leaks
+    api "com.squareup.leakcanary:leakcanary-android:$rootProject.ext.dependencies.leakcanary"
 }

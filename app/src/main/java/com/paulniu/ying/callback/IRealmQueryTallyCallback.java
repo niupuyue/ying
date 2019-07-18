@@ -15,6 +15,6 @@ public interface IRealmQueryTallyCallback extends IBaseRealmCallback {
 
     void getResults(boolean isRefresh, List<TallyModel> results);
 
-    void getTallyResult(long time);
+    void getTallyResult(TallyModel model);
 
 }

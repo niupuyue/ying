@@ -17,15 +17,20 @@ import com.paulniu.ying.base.BaseActivity;
  */
 public class AddTallyActivity extends BaseActivity {
 
-    public static Intent getIntent(Context context){
-        Intent intent = new Intent(context,AddTallyActivity.class);
+    public static Intent getIntent(Context context) {
+        Intent intent = new Intent(context, AddTallyActivity.class);
 
         return intent;
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        // 设置当前页面打开的方式
+//        overridePendingTransition(R.anim.anim_bottom_top, R.anim.anim_top_bottom);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addtally);
+
+
+
     }
 }
