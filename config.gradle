@@ -19,7 +19,7 @@ ext {
             IYingLibrary         : '0.0.12',
             // 第三方依赖库
             // 检测内存泄漏
-            leakcanary           : '2.0-alpha-3',
+            leakcanary           : '1.5.4',
             // 高德地图
             amapLocation         : 'latest.integration',
             // Logger日志
@@ -50,7 +50,9 @@ ext {
             // XPopup
             xpopup               : '1.8.7',
             // segmented
-            segmented            : '1.0.6'
+            segmented            : '1.0.6',
+            // licenseDialog
+            licenseDialog        : '1.8.3'
     ]
 }
 

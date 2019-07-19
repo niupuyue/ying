@@ -8,6 +8,7 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.paulniu.ying.constant.AppConfig;
 import com.paulniu.ying.database.YingMigration;
+import com.squareup.leakcanary.LeakCanary;
 
 import io.realm.DynamicRealm;
 import io.realm.Realm;
@@ -51,6 +52,8 @@ public class App extends Application {
         LibraryConstants.setContext(this);
         // 初始化realm数据库
         initRealmSQLite();
+        // 初始化leakCanary
+        initLeakCanary(this);
     }
 
     private void initRealmSQLite() {
@@ -63,5 +66,14 @@ public class App extends Application {
                 .migration(new YingMigration())
                 .build();
         Realm.setDefaultConfiguration(config);
+    }
+
+    public void initLeakCanary(Application app) {
+        if (LeakCanary.isInAnalyzerProcess(app)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(app);
     }
 }

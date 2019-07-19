@@ -21,6 +21,13 @@ import com.paulniu.ying.base.BaseActivity;
 import com.paulniu.ying.constant.AppConfig;
 import com.paulniu.ying.widget.popup.AddAffairOrTallyPop;
 
+import de.psdev.licensesdialog.LicensesDialog;
+import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20;
+import de.psdev.licensesdialog.licenses.BSD3ClauseLicense;
+import de.psdev.licensesdialog.licenses.MITLicense;
+import de.psdev.licensesdialog.model.Notice;
+import de.psdev.licensesdialog.model.Notices;
+
 /**
  * Coder: niupuyue (牛谱乐)
  * Date: 2019-07-13
@@ -92,6 +99,26 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     }
 
+    /**
+     * 显示开源依赖路径
+     */
+    private void showOpenLicense(){
+        Notices notices = new Notices();
+        notices.addNotice(new Notice("PhotoView", "https://github.com/chrisbanes/PhotoView", "Copyright 2017 Chris Banes", new ApacheSoftwareLicense20()));
+        notices.addNotice(new Notice("OkHttp", "https://github.com/square/okhttp", "Copyright 2016 Square, Inc.", new ApacheSoftwareLicense20()));
+        notices.addNotice(new Notice("Gson", "https://github.com/google/gson", "Copyright 2008 Google Inc.", new ApacheSoftwareLicense20()));
+        notices.addNotice(new Notice("Glide", "https://github.com/bumptech/glide", "Sam Judd - @sjudd on GitHub, @samajudd on Twitter", new ApacheSoftwareLicense20()));
+        notices.addNotice(new Notice("Stetho", "https://github.com/facebook/stetho", "Copyright (c) 2015, Facebook, Inc. All rights reserved.", new BSD3ClauseLicense()));
+        notices.addNotice(new Notice("PersistentCookieJar", "https://github.com/franmontiel/PersistentCookieJar", "Copyright 2016 Francisco José Montiel Navarro", new ApacheSoftwareLicense20()));
+        notices.addNotice(new Notice("jsoup", "https://jsoup.org", "Copyright © 2009 - 2016 Jonathan Hedley (jonathan@hedley.net)", new MITLicense()));
+
+        new LicensesDialog.Builder(this)
+                .setNotices(notices)
+                .setIncludeOwnLicense(true)
+                .build()
+                .show();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -116,7 +143,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.llSettingActivityOpen:
                 // 开源许可
-
+                showOpenLicense();
                 break;
             case R.id.llSettingActivitySource:
                 // 源代码
