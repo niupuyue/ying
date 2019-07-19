@@ -9,6 +9,11 @@ package com.paulniu.ying.constant;
  */
 public class AppConfig {
 
+    // 源代碼
+    public static final String APP_SOURCE_ADDRESS = "https://github.com/xiaoniudadi/ying";
+    // 更新日志
+    public static final String APP_SOURCE_LOG = "https://github.com/xiaoniudadi/ying.git";
+
     // Realm数据库名称
     public static final String REALM_SQLITE_NAME = "iying.realm";
     // 当前数据库版本

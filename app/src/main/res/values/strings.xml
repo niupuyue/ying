@@ -14,12 +14,14 @@
     <!-- 闪屏页面 -->
     <string name="splash_activity_bless_default">你好</string>
     <string name="splash_activity_bless_affair">任务:%s</string>
-
-    <!-- 权限相关 -->
-    <string name="permission_ask_fail_content">需要获取定位，读取存储空间等权限，否则将会影响您的正常使用！</string>
     <string name="welcome_activity_jump">跳过</string>
     <string name="welcome_activity_goto_home">开启旅程</string>
     <string name="splash_activity_count">%ss</string>
+
+    <!-- 权限相关 -->
+    <string name="permission_ask_fail_content">需要获取定位，读取存储空间等权限，否则将会影响您的正常使用！</string>
+
+    <!-- 主页面 MainActivity -->
     <string name="main_activity_home">首页</string>
     <string name="main_activity_movie">电影</string>
     <string name="main_activity_tally">记录</string>
@@ -29,6 +31,8 @@
     <string name="main_activity_switch">切换主题</string>
     <string name="main_activity_setting">设置</string>
     <string name="main_activity_share">分享</string>
+
+    <!-- 电影页面 -->
     <string name="movie_fragment_want_see">我想看</string>
     <string name="movie_fragment_directors">导演：</string>
     <string name="movie_fragment_actors">演员： </string>
@@ -53,5 +57,29 @@
     <string name="app_affair_list_more">更多操作</string>
     <string name="app_delete_affair_success">删除事务成功！</string>
     <string name="app_delete_affair_error">删除事务失败！</string>
+
+    <!-- 设置页面 -->
+    <string name="setting_activity_base_title">基本设置</string>
+    <string name="setting_activity_auto_switch_night_model">自动切换夜间模式</string>
+    <string name="setting_activity_set_switch_model_time">设置切换的时间</string>
+    <string name="setting_activity_textsize">字体大小</string>
+    <string name="setting_activity_change_textsize">设置字体大小</string>
+    <string name="setting_activity_other_setting">其他设置</string>
+    <string name="setting_activity_change_icon">更换图标</string>
+    <string name="setting_activity_change_icon_des">重启App生效(可以将App从最近任务列表中删除来重启App)</string>
+    <string name="setting_activity_change_color">主题颜色</string>
+    <string name="setting_activity_change_color_des">自定义主题颜色</string>
+    <string name="setting_activity_about">关于</string>
+    <string name="setting_activity_version">版本</string>
+    <string name="setting_activity_version_name">当前版本  %s</string>
+    <string name="setting_activity_change_log">更新日志</string>
+    <string name="setting_activity_change_log_address">%s</string>
+    <string name="setting_activity_open">开源许可</string>
+    <string name="setting_activity_open_des">查看开源信息</string>
+    <string name="setting_activity_source">源代码</string>
+    <string name="setting_activity_source_des">%s</string>
+    <string name="setting_activity_license">版权声明</string>
+    <string name="setting_activity_license_des">仅作个人及非商业用途</string>
+    <string name="setting_activity_license_content">本App所使用的所有Api均由 网络 提供，本人采取非正常手段获取。本程序仅供学习交流，不可用于任何商业用途。</string>
 
 </resources>
