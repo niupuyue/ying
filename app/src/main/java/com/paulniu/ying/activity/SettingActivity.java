@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.interfaces.OnConfirmListener;
+import com.niupuyue.mylibrary.utils.BaseUtility;
 import com.niupuyue.mylibrary.utils.ListenerUtility;
 import com.niupuyue.mylibrary.widgets.CircleImageView;
 import com.paulniu.ying.R;
@@ -96,6 +97,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initDataAfterListener() {
+        BaseUtility.setText(tvSettingActivitySource,AppConfig.APP_SOURCE_ADDRESS);
 
     }
 
